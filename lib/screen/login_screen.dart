@@ -1,4 +1,5 @@
 import 'package:blinck_app/service/login/i_login_service.dart';
+import 'package:blinck_app/screen/router.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -55,10 +56,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
 class _Logic {
 	
-  
+	_Logic () {
+	
+	}
+	
   onLoginButtonPressed (_LoginScreenState $) async {
   	var token = await $.widget.loginService.initiateLoginProcess();
-  	print('TOKEN: $token');
+  	
+  	String t = token.token;
+  	
+  	
+  	Navigator.pushReplacementNamed($.context, Router.SCREEN_MAIN);
   }
   
 }

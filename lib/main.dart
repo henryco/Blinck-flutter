@@ -1,5 +1,4 @@
-import 'package:blinck_app/di/dependencies.dart';
-import 'package:blinck_app/screen/login_screen.dart';
+import 'package:blinck_app/screen/router.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -7,19 +6,17 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-        title: 'Blinck',
-        
-		    theme: new ThemeData(
-          primarySwatch: Colors.blueGrey,
-        ),
-        
-		    home: new LoginScreen(
-          loginService: Dependencies.loginService,
-        )
+      title: 'Blinck',
+     
+      theme: new ThemeData(
+        primarySwatch: Colors.blueGrey,
+      ),
+	    
+	    initialRoute: Router.initialRoute,
+	    routes: Router.routes,
     );
   }
 }

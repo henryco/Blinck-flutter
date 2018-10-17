@@ -3,7 +3,7 @@ import 'package:blinck_app/service/login/i_login_service.dart';
 
 class _Store {
 	
-	ILoginService _facebookLoginService = new FacebookLoginService();
+	final ILoginService _facebookLoginService = new FacebookLoginService();
 	
 }
 
