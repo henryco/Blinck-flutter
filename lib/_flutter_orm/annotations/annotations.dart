@@ -1105,3 +1105,241 @@ class NamedEntityGraph {
 
 /// Used to specify the path and boundaries for a find operation or query.
 const NamedEntityGraph namedEntityGraph = NamedEntityGraph();
+
+
+/// Used to group NamedEntityGraph annotations.
+class NamedEntityGraphs {
+  
+  final List<NamedEntityGraph> value;
+  const NamedEntityGraphs(this.value);
+}
+
+
+/// Used to supply a query property or hint to the NamedQuery or
+/// NamedNativeQuery annotation. Vendor-specific hints that are not
+/// recognized by a provider are ignored.
+class QueryHint {
+  
+  /// Name of the hint.
+  final String name;
+  
+  /// Value of the hint.
+  final String value;
+  
+  const QueryHint({
+    @required this.value,
+    @required this.name,
+  });
+}
+
+/// Specifies a named native SQL query. Query names are scoped to the
+/// persistence unit. The NamedNativeQuery annotation can be applied
+/// to an entity or mapped superclass.
+class NamedNativeQuery {
+
+  /// The name used to refer to the query with the EntityManager methods
+  /// that create query objects.
+  final String name;
+  
+  /// The SQL query string.
+  final String query;
+  
+  /// Query properties and hints.
+  final List<QueryHint> hints;
+  
+  /// The class of the result.
+  final String resultClass;
+  
+  /// The name of a SqlResultSetMapping, as defined in metadata.
+  final String resultSetMapping;
+  
+  const NamedNativeQuery({
+    @required this.name,
+    @required this.query,
+    this.hints = const [],
+    this.resultClass = "void",
+    this.resultSetMapping = ""
+  });
+}
+
+/// Specifies multiple native SQL named queries. Query names are scoped to the
+/// persistence unit. The NamedNativeQueries annotation can be applied to an
+/// entity or mapped superclass.
+class NamedNativeQueries {
+
+  /// Array of NamedNativeQuery annotations.
+  final List<NamedNativeQuery> value;
+  const NamedNativeQueries(this.value);
+}
+
+
+enum LockModeType {
+  NONE,
+  OPTIMISTIC,
+  OPTIMISTIC_FORCE_INCREMENT,
+  PESSIMISTIC_FORCE_INCREMENT,
+  PESSIMISTIC_READ,
+  PESSIMISTIC_WRITE,
+  
+  /// Synonymous with OPTIMISTIC.
+  READ,
+  
+  /// Synonymous with OPTIMISTIC_FORCE_INCREMENT.
+  WRITE
+}
+
+
+/// Specifies a static, named query in the Java Persistence query language.
+/// Query names are scoped to the persistence unit. The NamedQuery annotation
+/// can be applied to an entity or mapped superclass.
+/// @NamedQuery(
+//            name="findAllCustomersWithName",
+//            query="SELECT c FROM Customer c WHERE c.name LIKE :customName"
+//    )
+class NamedQuery {
+
+  /// The name used to refer to the query with the EntityManager
+  /// methods that create query objects.
+  final String name;
+  
+  /// The query string in the Java Persistence query language.
+  final String query;
+  
+  /// Query properties and hints.
+  final List<QueryHint> hints;
+  
+  /// The lock mode type to use in query execution.
+  final LockModeType lockMode;
+ 
+  const NamedQuery({
+    @required this.name,
+    @required this.query,
+    this.hints = const [],
+    this.lockMode = LockModeType.NONE
+  });
+}
+
+/// Specifies multiple named Java Persistence query language queries.
+/// Query names are scoped to the persistence unit. The NamedQueries
+/// annotation can be applied to an entity or mapped superclass.
+class NamedQueries {
+
+  final List<NamedQuery> value;
+  const NamedQueries(this.value);
+}
+
+/// Specifies whether an entity should be cached if caching is enabled when the
+/// value of the persistence.xml caching element is ENABLE_SELECTIVE or
+/// DISABLE_SELECTIVE. The value of the Cacheable annotation is inherited by
+/// subclasses; it can be overridden by specifying Cacheable on a subclass.
+/// Cacheable(false) means that the entity and its state must not be
+/// cached by the provider.
+class Cacheable {
+  
+  /// Whether or not the entity should be cached.
+  final bool value;
+  
+  const Cacheable([this.value = true]);
+}
+
+/// Specifies whether an entity should be cached if caching is enabled when the
+/// value of the persistence.xml caching element is ENABLE_SELECTIVE or
+/// DISABLE_SELECTIVE. The value of the Cacheable annotation is inherited by
+/// subclasses; it can be overridden by specifying Cacheable on a subclass.
+/// Cacheable(false) means that the entity and its state must not be
+/// cached by the provider.
+const Cacheable cacheable = Cacheable();
+
+
+/// Specifies the table that is used for the mapping of collections of basic or
+/// embeddable types. Applied to the collection-valued field or property.
+/// By default, the columns of the collection table that correspond to the
+/// embeddable class or basic type are derived from the attributes of the
+/// embeddable class or from the basic type according to the default values
+/// of the Column annotation. In the case of a basic type, the column name is
+/// derived from the name of the collection-valued field or property. In the
+/// case of an embeddable class, the column names are derived from the field
+/// or property names of the embeddable class.
+/// To override the default properties of the column used for a basic type, the
+/// Column annotation is used on the collection-valued attribute in addition to
+/// the ElementCollection annotation.
+/// To override these defaults for an embeddable class, the AttributeOverride
+/// and/or AttributeOverrides annotations can be used in addition to the
+/// ElementCollection annotation. If the embeddable class contains references
+/// to other entities, the default values for the columns corresponding to those
+/// references may be overridden by means of the AssociationOverride and/or
+/// AssociationOverrides annotations.
+/// If the CollectionTable annotation is missing, the default values of the
+/// CollectionTable annotation elements apply.
+///    Example:
+///
+///    @Embeddable public class Address {
+///       protected String street;
+///       protected String city;
+///       protected String state;
+///       ...
+///     }
+///
+///    @Entity public class Person {
+///       @Id protected String ssn;
+///       protected String name;
+///       protected Address home;
+///       ...
+///       @ElementCollection  // use default table (PERSON_NICKNAMES)
+///       @Column(name="name", length=50)
+///       protected Set<String> nickNames = new HashSet();
+///       ...
+///    }
+///
+///    @Entity public class WealthyPerson extends Person {
+///       @ElementCollection
+///       @CollectionTable(name="HOMES") // use default join column name
+///       @AttributeOverrides({
+///          @AttributeOverride(name="street",
+///                             column=@Column(name="HOME_STREET")),
+///          @AttributeOverride(name="city",
+///                             column=@Column(name="HOME_CITY")),
+///          @AttributeOverride(name="state",
+///                             column=@Column(name="HOME_STATE"))
+///        })
+///       protected Set<Address> vacationHomes = new HashSet();
+///       ...
+///    }
+class CollectionTable {
+
+  /// The catalog of the table.
+  final String catalog;
+  
+  /// Used to specify or control the generation of a foreign key constraint for
+  /// the columns corresponding to the joinColumns element when table
+  /// generation is in effect.
+  final ForeignKey foreignKey;
+  
+  /// Indexes for the table.
+  final List<Index> indexes;
+  
+  /// The foreign key columns of the collection table which
+  /// reference the primary table of the entity.
+  final List<JoinColumn> joinColumns;
+  
+  /// The name of the collection table.
+  final String name;
+  
+  /// The schema of the table.
+  final String schema;
+  
+  /// Unique constraints that are to be placed on the table.
+  final List<UniqueConstraint> uniqueConstraints;
+  
+  const CollectionTable({
+    this.catalog = "",
+    this.schema = "",
+    this.name = "",
+    this.uniqueConstraints = const [],
+    this.joinColumns = const [],
+    this.indexes = const [],
+    this.foreignKey = const ForeignKey(
+      constraintMode: ConstraintMode.PROVIDER_DEFAULT
+    ),
+  });
+}
