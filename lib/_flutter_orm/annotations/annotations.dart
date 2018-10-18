@@ -268,8 +268,10 @@ class GeneratedValue {
   /// must use to generate the annotated entity primary key.
   final GenerationType strategy;
 
-  const GeneratedValue(
-      {this.strategy = GenerationType.AUTO, this.generator = ""});
+  const GeneratedValue({
+    this.strategy = GenerationType.AUTO,
+    this.generator = ""
+  });
 }
 
 /// Provides for the specification of generation strategies
@@ -292,7 +294,10 @@ class Id {
 /// primary key of the primary table. If no Column annotation is specified,
 /// the primary key column name is assumed to be the name of the primary
 /// key property or field.
-const Id id = Id();
+const Id id = const Id();
+
+/// Synonymous for @id
+const Id id$ = id;
 
 /// Used in schema generation to specify creation of an index.
 /// Note that it is not necessary to specify an index for a primary key,
