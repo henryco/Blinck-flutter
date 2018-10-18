@@ -81,8 +81,17 @@ const Column column = Column();
 /// Must be specified if the collection is to be mapped
 /// by means of a collection table.
 class ElementCollection {
-  // todo
-  const ElementCollection();
+
+  ///  Whether the collection should be lazily loaded or must be eagerly fetched.
+  final FetchType fetch;
+  
+  /// The basic or embeddable class that is the element type of the collection.
+  final String targetClass;
+  
+  const ElementCollection({
+    this.targetClass = "",
+    this.fetch = FetchType.LAZY
+  });
 }
 
 /// Specifies a collection of instances of a basic type or embeddable class.
@@ -175,6 +184,19 @@ class Enumerated {
 const Enumerated enumerated = Enumerated();
 
 
+/// Used to control the application of a constraint.
+enum ConstraintMode {
+  
+  /// Apply the constraint
+  CONSTRAINT,
+  
+  /// Do not apply the constraint.
+  NO_CONSTRAINT,
+  
+  /// Use the provider-defined default behavior.
+  PROVIDER_DEFAULT
+}
+
 /// Used to specify the handling of foreign key constraints when schema
 /// generation is in effect. If this annotation is not specified,
 /// the persistence provider's default foreign key strategy will be used.
@@ -200,11 +222,11 @@ class ForeignKey {
   /// The name of the foreign key constraint.
   final String name;
 
-  /// todo
-  // final ConstraintMode constraintMode;
+   final ConstraintMode constraintMode;
   
   const ForeignKey({
     this.foreignKeyDefinition = "",
+    this.constraintMode = ConstraintMode.CONSTRAINT,
     this.name = ""
   });
 }
@@ -360,3 +382,400 @@ class Inheritance {
 /// inheritance type is specified for an entity class hierarchy,
 /// the SINGLE_TABLE mapping strategy is used.
 const Inheritance inheritance = Inheritance();
+
+
+/// Specifies a column for joining an entity association or element collection.
+/// If the JoinColumn annotation itself is defaulted, a single join column
+/// is assumed and the default values apply.
+class JoinColumn {
+
+  /// The SQL fragment that is used when generating the DDL for the column.
+  final String columnDefinition;
+
+  /// Used to specify or control the generation of a foreign key constraint
+  /// when table generation is in effect.
+  final ForeignKey foreignKey;
+  
+  /// Whether the column is included in SQL INSERT statements generated
+  /// by the persistence provider.
+  final bool insertable;
+  
+  /// The name of the foreign key column.
+  final String name;
+  
+  /// Whether the foreign key column is nullable.
+  final bool nullable;
+  
+  /// The name of the column referenced by this foreign key column.
+  final String referencedColumnName;
+  
+  /// The name of the table that contains the column.
+  final String table;
+  
+  /// Whether the property is a unique key.
+  final bool unique;
+  
+  /// Whether the column is included in SQL UPDATE statements generated
+  /// by the persistence provider.
+  final bool updatable;
+
+  const JoinColumn({
+    this.referencedColumnName = "",
+    this.columnDefinition = "",
+    this.foreignKey,
+    this.insertable = true,
+    this.updatable = true,
+    this.nullable = true,
+    this.unique = false,
+    this.table = "",
+    this.name = "",
+  });
+}
+
+
+/// Specifies a column for joining an entity association or element collection.
+/// If the JoinColumn annotation itself is defaulted, a single join column
+/// is assumed and the default values apply.
+const JoinColumn joinColumn = JoinColumn();
+
+
+/// Specifies the mapping for composite foreign keys. This annotation groups
+/// JoinColumn annotations for the same relationship. When the JoinColumns
+/// annotation is used, both the name and the referencedColumnName elements
+/// must be specified in each such JoinColumn annotation.
+class JoinColumns {
+  
+  /// Used to specify or control the generation of a foreign key constraint
+  /// when table generation is in effect.
+  final ForeignKey foreignKey;
+  
+  /// The join columns that map the relationship.
+  final List<JoinColumn> value;
+  
+  const JoinColumns({
+    @required this.value,
+    this.foreignKey,
+  });
+}
+
+/// Specifies that a unique constraint is to be included in
+/// the generated DDL for a primary or secondary table.
+class UniqueConstraint {
+
+  /// An array of the column names that make up the constraint.
+  final List<String> columnNames;
+  
+  /// Constraint name.
+  final String name;
+  
+  const UniqueConstraint({
+    @required this.columnNames,
+    this.name = "",
+  });
+}
+
+
+/// Specifies the mapping of associations. It is applied to the owning side
+/// of an association. A join table is typically used in the mapping of
+/// many-to-many and unidirectional one-to-many associations. It may also be
+/// used to map bidirectional many-to-one/one-to-many associations,
+/// unidirectional many-to-one relationships, and one-to-one associations
+/// (both bidirectional and unidirectional). When a join table is used in
+/// mapping a relationship with an embeddable class on the owning side of the
+/// relationship, the containing entity rather than the embeddable class is
+/// considered the owner of the relationship. If the JoinTable annotation is
+/// missing, the default values of the annotation elements apply.
+/// The name of the join table is assumed to be the table names of the
+/// associated primary tables concatenated together (owning side first)
+/// using an underscore.
+class JoinTable {
+
+  /// The catalog of the table.
+  final String catalog;
+
+  /// Used to specify or control the generation of a foreign key constraint
+  /// when table generation is in effect.
+  final ForeignKey foreignKey;
+  
+  /// Used to specify or control the generation of a foreign key constraint for
+  /// the columns corresponding to the inverseJoinColumns element when table
+  /// generation is in effect.
+  final ForeignKey inverseForeignKey;
+  
+  /// Indexes for the table.
+  final List<Index> indexes;
+  
+  /// The foreign key columns of the join table which reference the primary
+  /// table of the entity owning the association.
+  final List<JoinColumn> joinColumns;
+  
+  /// The foreign key columns of the join table which reference the
+  /// primary table of the entity that does not own the association.
+  final List<JoinColumn> inverseJoinColumns;
+  
+  /// The name of the join table.
+  final String name;
+  
+  /// The schema of the table.
+  final String schema;
+  
+  
+  final List<UniqueConstraint> uniqueConstraints;
+  
+  const JoinTable({
+    this.inverseJoinColumns = const [],
+    this.uniqueConstraints = const [],
+    this.joinColumns = const [],
+    this.indexes = const [],
+    this.inverseForeignKey,
+    this.catalog = "",
+    this.schema = "",
+    this.foreignKey,
+    this.name = "",
+  });
+}
+
+/// Specifies the mapping of associations. It is applied to the owning side
+/// of an association. A join table is typically used in the mapping of
+/// many-to-many and unidirectional one-to-many associations. It may also be
+/// used to map bidirectional many-to-one/one-to-many associations,
+/// unidirectional many-to-one relationships, and one-to-one associations
+/// (both bidirectional and unidirectional). When a join table is used in
+/// mapping a relationship with an embeddable class on the owning side of the
+/// relationship, the containing entity rather than the embeddable class is
+/// considered the owner of the relationship. If the JoinTable annotation is
+/// missing, the default values of the annotation elements apply.
+/// The name of the join table is assumed to be the table names of the
+/// associated primary tables concatenated together (owning side first)
+/// using an underscore.
+const JoinTable joinTable = JoinTable();
+
+
+class _Lob {
+  const _Lob();
+}
+
+/// Specifies that a persistent property or field should be persisted as a
+/// large object to a database-supported large object type. Portable
+/// applications should use the Lob annotation when mapping to a database Lob
+/// type. The Lob annotation may be used in conjunction with the Basic
+/// annotation or the ElementCollection annotation when the element collection
+/// value is of basic type. A Lob may be either a binary or character type.
+/// The Lob type is inferred from the type of the persistent field or property,
+/// and except for string and character-based types defaults to Blob.
+const _Lob lob = _Lob();
+const _Lob Lob = lob;
+
+/// Defines the set of cascadable operations that are propagated to the
+/// associated entity. The value cascade=ALL is equivalent to
+/// cascade={PERSIST, MERGE, REMOVE, REFRESH, DETACH}.
+enum CascadeType {
+  
+  /// Cascade all operations
+  ALL,
+  
+  /// Cascade detach operation
+  DETACH,
+  
+  /// Cascade merge operation
+  MERGE,
+  
+  /// Cascade persist operation
+  PERSIST,
+  
+  /// Cascade refresh operation
+  REFRESH,
+  
+  /// Cascade remove operation
+  REMOVE
+}
+
+
+/// Defines strategies for fetching data from the database. The EAGER strategy
+/// is a requirement on the persistence provider runtime that data must be
+/// eagerly fetched. The LAZY strategy is a hint to the persistence provider
+/// runtime that data should be fetched lazily when it is first accessed.
+/// The implementation is permitted to eagerly fetch data for which the LAZY
+/// strategy hint has been specified.
+enum FetchType {
+  
+  /// Defines that data must be eagerly fetched.
+  EAGER,
+  
+  /// Defines that data can be lazily fetched.
+  LAZY
+}
+
+
+/// The simplest type of mapping to a database column. The Basic annotation can
+/// be applied to a persistent property or instance variable of any of the
+/// following types: Java primitive types, wrappers of the primitive types.
+/// The use of the Basic annotation is optional for persistent fields
+/// and properties of these types. If the Basic annotation is not specified
+/// for such a field or property, the default values of the Basic
+/// annotation will apply.
+class Basic {
+
+  /// Defines whether the value of the field or property may be null.
+  final bool optional;
+  
+  /// Defines whether the value of the field or property should
+  /// be lazily loaded or must be eagerly fetched.
+  final FetchType fetchType;
+  
+  const Basic({
+    this.optional,
+    this.fetchType
+  });
+}
+
+/// Specifies a many-valued association with many-to-many multiplicity.
+/// Every many-to-many association has two sides, the owning side and the
+/// non-owning, or inverse, side. The join table is specified on the owning
+/// side. If the association is bidirectional, either side may be designated
+/// as the owning side. If the relationship is bidirectional, the non-owning
+/// side must use the mappedBy element of the ManyToMany annotation to specify
+/// the relationship field or property of the owning side. The join table for
+/// the relationship, if not defaulted, is specified on the owning side.
+/// The ManyToMany annotation may be used within an embeddable class
+/// contained within an entity class to specify a relationship to a collection
+/// of entities. If the relationship is bidirectional and the entity containing
+/// the embeddable class is the owner of the relationship, the non-owning side
+/// must use the mappedBy element of the ManyToMany annotation to specify the
+/// relationship field or property of the embeddable class. The dot (".")
+/// notation syntax must be used in the mappedBy element to indicate the
+/// relationship attribute within the embedded attribute. The value of each
+/// identifier used with the dot notation is the name of the respective embedded
+/// field or property.
+class ManyToMany {
+
+  /// The operations that must be cascaded to the target of the association.
+  final List<CascadeType> cascade;
+  
+  /// Whether the association should be lazily loaded
+  /// or must be eagerly fetched.
+  final FetchType fetchType;
+  
+  /// The field that owns the relationship.
+  final String mappedBy;
+  
+  /// The entity class that is the target of the association.
+  final String targetEntity;
+  
+  const ManyToMany({
+    this.cascade = const [],
+    this.mappedBy = "",
+    this.targetEntity = "",
+    this.fetchType = FetchType.LAZY
+  });
+}
+
+/// Specifies a many-valued association with many-to-many multiplicity.
+/// Every many-to-many association has two sides, the owning side and the
+/// non-owning, or inverse, side. The join table is specified on the owning
+/// side. If the association is bidirectional, either side may be designated
+/// as the owning side. If the relationship is bidirectional, the non-owning
+/// side must use the mappedBy element of the ManyToMany annotation to specify
+/// the relationship field or property of the owning side. The join table for
+/// the relationship, if not defaulted, is specified on the owning side.
+/// The ManyToMany annotation may be used within an embeddable class
+/// contained within an entity class to specify a relationship to a collection
+/// of entities. If the relationship is bidirectional and the entity containing
+/// the embeddable class is the owner of the relationship, the non-owning side
+/// must use the mappedBy element of the ManyToMany annotation to specify the
+/// relationship field or property of the embeddable class. The dot (".")
+/// notation syntax must be used in the mappedBy element to indicate the
+/// relationship attribute within the embedded attribute. The value of each
+/// identifier used with the dot notation is the name of the respective embedded
+/// field or property.
+const ManyToMany manyToMany = ManyToMany();
+
+
+/// Specifies a single-valued association to another entity class that has
+/// many-to-one multiplicity. It is not normally necessary to specify the
+/// target entity explicitly since it can usually be inferred from the type
+/// of the object being referenced. If the relationship is bidirectional,
+/// the non-owning OneToMany entity side must used the mappedBy element to
+/// specify the relationship field or property of the entity that is the owner
+/// of the relationship. The ManyToOne annotation may be used within an
+/// embeddable class to specify a relationship from the embeddable class to an
+/// entity class. If the relationship is bidirectional, the non-owning
+/// OneToMany entity side must use the mappedBy element of the OneToMany
+/// annotation to specify the relationship field or property of the embeddable
+/// field or property on the owning side of the relationship. The dot (".")
+/// notation syntax must be used in the mappedBy element to indicate the
+/// relationship attribute within the embedded attribute. The value of each
+/// identifier used with the dot notation is the name of the respective
+/// embedded field or property.
+class ManyToOne {
+  
+  /// The operations that must be cascaded to the target of the association.
+  final List<CascadeType> cascade;
+  
+  /// Whether the association should be lazily loaded
+  /// or must be eagerly fetched.
+  final FetchType fetchType;
+
+  /// Whether the association is optional.
+  final bool optional;
+
+  /// The entity class that is the target of the association.
+  final String targetEntity;
+
+  const ManyToOne({
+    this.cascade = const [],
+    this.fetchType = FetchType.EAGER,
+    this.optional = true,
+    this.targetEntity = ""
+  });
+}
+
+/// Specifies a single-valued association to another entity class that has
+/// many-to-one multiplicity. It is not normally necessary to specify the
+/// target entity explicitly since it can usually be inferred from the type
+/// of the object being referenced. If the relationship is bidirectional,
+/// the non-owning OneToMany entity side must used the mappedBy element to
+/// specify the relationship field or property of the entity that is the owner
+/// of the relationship. The ManyToOne annotation may be used within an
+/// embeddable class to specify a relationship from the embeddable class to an
+/// entity class. If the relationship is bidirectional, the non-owning
+/// OneToMany entity side must use the mappedBy element of the OneToMany
+/// annotation to specify the relationship field or property of the embeddable
+/// field or property on the owning side of the relationship. The dot (".")
+/// notation syntax must be used in the mappedBy element to indicate the
+/// relationship attribute within the embedded attribute. The value of each
+/// identifier used with the dot notation is the name of the respective
+/// embedded field or property.
+const ManyToOne manyToOne = ManyToOne();
+
+
+/// Specifies a composite primary key class that is mapped to multiple fields
+/// or properties of the entity. The names of the fields or properties in the
+/// primary key class and the primary key fields or properties of the entity
+/// must correspond and their types must be the same.
+class IdClass {
+  final String value;
+  const IdClass(this.value);
+}
+
+
+/// Specifies a composite primary key class that is mapped to multiple fields or
+/// properties of the entity. The names of the fields or properties in the
+/// primary key class and the primary key fields or properties of the entity
+/// must correspond and their types must be the same.
+class MapKey {
+  
+  /// The name of the persistent field or property of the associated entity
+  /// that is used as the map key.
+  final String name;
+  
+  const MapKey({
+    this.name = ""
+  });
+}
+
+/// Specifies a composite primary key class that is mapped to multiple fields or
+/// properties of the entity. The names of the fields or properties in the
+/// primary key class and the primary key fields or properties of the entity
+/// must correspond and their types must be the same.
+const MapKey mapKey = MapKey();
