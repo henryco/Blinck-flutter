@@ -12,9 +12,7 @@ class Entity {
   /// a reserved literal in the Java Persistence query language.
   final String name;
 
-  const Entity([
-    this.name = ""
-  ]);
+  const Entity([this.name = ""]);
 }
 
 /// Specifies that the class is an entity.
@@ -76,29 +74,23 @@ class Column {
 /// If no Column annotation is specified, the default values apply.
 const Column column = Column();
 
-
 /// Specifies a collection of instances of a basic type or embeddable class.
 /// Must be specified if the collection is to be mapped
 /// by means of a collection table.
 class ElementCollection {
-
   ///  Whether the collection should be lazily loaded or must be eagerly fetched.
   final FetchType fetch;
-  
+
   /// The basic or embeddable class that is the element type of the collection.
   final String targetClass;
-  
-  const ElementCollection({
-    this.targetClass = "",
-    this.fetch = FetchType.LAZY
-  });
+
+  const ElementCollection({this.targetClass = "", this.fetch = FetchType.LAZY});
 }
 
 /// Specifies a collection of instances of a basic type or embeddable class.
 /// Must be specified if the collection is to be mapped
 /// by means of a collection table.
 const ElementCollection elementCollection = ElementCollection();
-
 
 /// Specifies a class whose instances are stored as an intrinsic part of an
 /// owning entity and share the identity of the entity. Each of the persistent
@@ -132,8 +124,6 @@ class Embedded {
 /// used to override mappings declared or defaulted by the embeddable class.
 const Embedded embedded = Embedded();
 
-
-
 /// Specifies that the property or field is not persistent.
 /// It is used to annotate a property or field of an entity class,
 /// mapped superclass, or embeddable class.
@@ -146,15 +136,13 @@ class Transient {
 /// mapped superclass, or embeddable class.
 const Transient transient = Transient();
 
-
 /// Defines mapping for enumerated types. The constants of this enumerated type
 /// specify how a persistent property or field of an
 /// enumerated type should be persisted.
 enum EnumType {
-  
   /// Persist enumerated type property or field as an integer.
   ORDINAL,
-  
+
   /// Persist enumerated type property or field as a string.
   STRING
 }
@@ -170,9 +158,8 @@ class Enumerated {
   /// specify how a persistent property or field of an
   /// enumerated type should be persisted.
   final EnumType enumType;
-  const Enumerated([
-    this.enumType = EnumType.ORDINAL
-  ]);
+
+  const Enumerated([this.enumType = EnumType.ORDINAL]);
 }
 
 /// Specifies that a persistent property or field should be persisted
@@ -183,16 +170,14 @@ class Enumerated {
 /// is not used, the EnumType value is assumed to be ORDINAL.
 const Enumerated enumerated = Enumerated();
 
-
 /// Used to control the application of a constraint.
 enum ConstraintMode {
-  
   /// Apply the constraint
   CONSTRAINT,
-  
+
   /// Do not apply the constraint.
   NO_CONSTRAINT,
-  
+
   /// Use the provider-defined default behavior.
   PROVIDER_DEFAULT
 }
@@ -215,22 +200,19 @@ enum ConstraintMode {
 /// whose update and delete actions it determines most appropriate for the join
 /// column(s) to which the foreign key annotation is applied.
 class ForeignKey {
-  
   /// The foreign key constraint definition.
   final String foreignKeyDefinition;
-  
+
   /// The name of the foreign key constraint.
   final String name;
 
-   final ConstraintMode constraintMode;
-  
-  const ForeignKey({
-    this.foreignKeyDefinition = "",
-    this.constraintMode = ConstraintMode.CONSTRAINT,
-    this.name = ""
-  });
-}
+  final ConstraintMode constraintMode;
 
+  const ForeignKey(
+      {this.foreignKeyDefinition = "",
+      this.constraintMode = ConstraintMode.CONSTRAINT,
+      this.name = ""});
+}
 
 /// Used to specify the handling of foreign key constraints when schema
 /// generation is in effect. If this annotation is not specified,
@@ -251,22 +233,20 @@ class ForeignKey {
 /// column(s) to which the foreign key annotation is applied.
 const ForeignKey foreignKey = ForeignKey();
 
-
 /// Defines the types of primary key generation strategies.
 enum GenerationType {
-  
   /// Indicates that the persistence provider should pick an appropriate
   /// strategy for the particular database.
   AUTO,
-  
+
   /// Indicates that the persistence provider must assign primary keys
   /// for the entity using a database identity column.
   IDENTITY,
-  
+
   /// Indicates that the persistence provider must assign primary
   /// keys for the entity using a database sequence.
   SEQUENCE,
-  
+
   /// Indicates that the persistence provider must assign primary keys
   /// for the entity using an underlying database table to ensure uniqueness.
   TABLE
@@ -279,7 +259,6 @@ enum GenerationType {
 /// annotation is only required to be supported for simple primary keys. Use of
 /// the GeneratedValue annotation is not supported for derived primary keys.
 class GeneratedValue {
-
   /// The name of the primary key generator to use as specified in the
   /// SequenceGenerator or TableGenerator annotation. Defaults to the id
   /// generator supplied by persistence provider.
@@ -288,13 +267,10 @@ class GeneratedValue {
   /// The primary key generation strategy that the persistence provider
   /// must use to generate the annotated entity primary key.
   final GenerationType strategy;
-  
-  const GeneratedValue({
-    this.strategy = GenerationType.AUTO,
-    this.generator = ""
-  });
-}
 
+  const GeneratedValue(
+      {this.strategy = GenerationType.AUTO, this.generator = ""});
+}
 
 /// Provides for the specification of generation strategies
 /// for the values of primary keys. The GeneratedValue annotation may be applied
@@ -303,7 +279,6 @@ class GeneratedValue {
 /// annotation is only required to be supported for simple primary keys. Use of
 /// the GeneratedValue annotation is not supported for derived primary keys.
 const GeneratedValue generatedValue = GeneratedValue();
-
 
 /// The mapped column for the primary key of the entity is assumed to be the
 /// primary key of the primary table. If no Column annotation is specified,
@@ -329,16 +304,15 @@ const Id id = Id();
 ///
 /// If ASC or DESC is not specified, ASC (ascending order) is assumed.
 class Index {
-
   /// The names of the columns to be included in the index, in order.
   final String columnList;
- 
+
   /// The name of the index; defaults to a provider-generated name.
   final String name;
-  
+
   /// Whether the index is unique.
   final bool unique;
-  
+
   const Index({
     @required this.columnList,
     this.unique = false,
@@ -346,22 +320,19 @@ class Index {
   });
 }
 
-
 /// Defines inheritance strategy options.
 enum InheritanceType {
-  
   /// A strategy in which fields that are specific to a subclass are mapped to
   /// a separate table than the fields that are common to the parent class,
   /// and a join is performed to instantiate the subclass.
   JOINED,
-  
+
   /// A single table per class hierarchy.
   SINGLE_TABLE,
-  
+
   /// A table per concrete entity class.
   TABLE_PER_CLASS
 }
-
 
 /// Specifies the inheritance strategy to be used for an entity class hierarchy.
 /// It is specified on the entity class that is the root of the entity class
@@ -371,9 +342,7 @@ enum InheritanceType {
 class Inheritance {
   final InheritanceType inheritanceType;
 
-  const Inheritance({
-    this.inheritanceType = InheritanceType.SINGLE_TABLE
-  });
+  const Inheritance({this.inheritanceType = InheritanceType.SINGLE_TABLE});
 }
 
 /// Specifies the inheritance strategy to be used for an entity class hierarchy.
@@ -383,38 +352,36 @@ class Inheritance {
 /// the SINGLE_TABLE mapping strategy is used.
 const Inheritance inheritance = Inheritance();
 
-
 /// Specifies a column for joining an entity association or element collection.
 /// If the JoinColumn annotation itself is defaulted, a single join column
 /// is assumed and the default values apply.
 class JoinColumn {
-
   /// The SQL fragment that is used when generating the DDL for the column.
   final String columnDefinition;
 
   /// Used to specify or control the generation of a foreign key constraint
   /// when table generation is in effect.
   final ForeignKey foreignKey;
-  
+
   /// Whether the column is included in SQL INSERT statements generated
   /// by the persistence provider.
   final bool insertable;
-  
+
   /// The name of the foreign key column.
   final String name;
-  
+
   /// Whether the foreign key column is nullable.
   final bool nullable;
-  
+
   /// The name of the column referenced by this foreign key column.
   final String referencedColumnName;
-  
+
   /// The name of the table that contains the column.
   final String table;
-  
+
   /// Whether the property is a unique key.
   final bool unique;
-  
+
   /// Whether the column is included in SQL UPDATE statements generated
   /// by the persistence provider.
   final bool updatable;
@@ -432,26 +399,23 @@ class JoinColumn {
   });
 }
 
-
 /// Specifies a column for joining an entity association or element collection.
 /// If the JoinColumn annotation itself is defaulted, a single join column
 /// is assumed and the default values apply.
 const JoinColumn joinColumn = JoinColumn();
-
 
 /// Specifies the mapping for composite foreign keys. This annotation groups
 /// JoinColumn annotations for the same relationship. When the JoinColumns
 /// annotation is used, both the name and the referencedColumnName elements
 /// must be specified in each such JoinColumn annotation.
 class JoinColumns {
-  
   /// Used to specify or control the generation of a foreign key constraint
   /// when table generation is in effect.
   final ForeignKey foreignKey;
-  
+
   /// The join columns that map the relationship.
   final List<JoinColumn> value;
-  
+
   const JoinColumns({
     @required this.value,
     this.foreignKey,
@@ -461,19 +425,17 @@ class JoinColumns {
 /// Specifies that a unique constraint is to be included in
 /// the generated DDL for a primary or secondary table.
 class UniqueConstraint {
-
   /// An array of the column names that make up the constraint.
   final List<String> columnNames;
-  
+
   /// Constraint name.
   final String name;
-  
+
   const UniqueConstraint({
     @required this.columnNames,
     this.name = "",
   });
 }
-
 
 /// Specifies the mapping of associations. It is applied to the owning side
 /// of an association. A join table is typically used in the mapping of
@@ -489,39 +451,37 @@ class UniqueConstraint {
 /// associated primary tables concatenated together (owning side first)
 /// using an underscore.
 class JoinTable {
-
   /// The catalog of the table.
   final String catalog;
 
   /// Used to specify or control the generation of a foreign key constraint
   /// when table generation is in effect.
   final ForeignKey foreignKey;
-  
+
   /// Used to specify or control the generation of a foreign key constraint for
   /// the columns corresponding to the inverseJoinColumns element when table
   /// generation is in effect.
   final ForeignKey inverseForeignKey;
-  
+
   /// Indexes for the table.
   final List<Index> indexes;
-  
+
   /// The foreign key columns of the join table which reference the primary
   /// table of the entity owning the association.
   final List<JoinColumn> joinColumns;
-  
+
   /// The foreign key columns of the join table which reference the
   /// primary table of the entity that does not own the association.
   final List<JoinColumn> inverseJoinColumns;
-  
+
   /// The name of the join table.
   final String name;
-  
+
   /// The schema of the table.
   final String schema;
-  
-  
+
   final List<UniqueConstraint> uniqueConstraints;
-  
+
   const JoinTable({
     this.inverseJoinColumns = const [],
     this.uniqueConstraints = const [],
@@ -550,7 +510,6 @@ class JoinTable {
 /// using an underscore.
 const JoinTable joinTable = JoinTable();
 
-
 class _Lob {
   const _Lob();
 }
@@ -570,26 +529,24 @@ const _Lob Lob = lob;
 /// associated entity. The value cascade=ALL is equivalent to
 /// cascade={PERSIST, MERGE, REMOVE, REFRESH, DETACH}.
 enum CascadeType {
-  
   /// Cascade all operations
   ALL,
-  
+
   /// Cascade detach operation
   DETACH,
-  
+
   /// Cascade merge operation
   MERGE,
-  
+
   /// Cascade persist operation
   PERSIST,
-  
+
   /// Cascade refresh operation
   REFRESH,
-  
+
   /// Cascade remove operation
   REMOVE
 }
-
 
 /// Defines strategies for fetching data from the database. The EAGER strategy
 /// is a requirement on the persistence provider runtime that data must be
@@ -598,14 +555,12 @@ enum CascadeType {
 /// The implementation is permitted to eagerly fetch data for which the LAZY
 /// strategy hint has been specified.
 enum FetchType {
-  
   /// Defines that data must be eagerly fetched.
   EAGER,
-  
+
   /// Defines that data can be lazily fetched.
   LAZY
 }
-
 
 /// The simplest type of mapping to a database column. The Basic annotation can
 /// be applied to a persistent property or instance variable of any of the
@@ -615,18 +570,14 @@ enum FetchType {
 /// for such a field or property, the default values of the Basic
 /// annotation will apply.
 class Basic {
-
   /// Defines whether the value of the field or property may be null.
   final bool optional;
-  
+
   /// Defines whether the value of the field or property should
   /// be lazily loaded or must be eagerly fetched.
   final FetchType fetchType;
-  
-  const Basic({
-    this.optional,
-    this.fetchType
-  });
+
+  const Basic({this.optional, this.fetchType});
 }
 
 /// Specifies a many-valued association with many-to-many multiplicity.
@@ -648,26 +599,24 @@ class Basic {
 /// identifier used with the dot notation is the name of the respective embedded
 /// field or property.
 class ManyToMany {
-
   /// The operations that must be cascaded to the target of the association.
   final List<CascadeType> cascade;
-  
+
   /// Whether the association should be lazily loaded
   /// or must be eagerly fetched.
   final FetchType fetchType;
-  
+
   /// The field that owns the relationship.
   final String mappedBy;
-  
+
   /// The entity class that is the target of the association.
   final String targetEntity;
-  
-  const ManyToMany({
-    this.cascade = const [],
-    this.mappedBy = "",
-    this.targetEntity = "",
-    this.fetchType = FetchType.LAZY
-  });
+
+  const ManyToMany(
+      {this.cascade = const [],
+      this.mappedBy = "",
+      this.targetEntity = "",
+      this.fetchType = FetchType.LAZY});
 }
 
 /// Specifies a many-valued association with many-to-many multiplicity.
@@ -690,7 +639,6 @@ class ManyToMany {
 /// field or property.
 const ManyToMany manyToMany = ManyToMany();
 
-
 /// Specifies a single-valued association to another entity class that has
 /// many-to-one multiplicity. It is not normally necessary to specify the
 /// target entity explicitly since it can usually be inferred from the type
@@ -708,10 +656,9 @@ const ManyToMany manyToMany = ManyToMany();
 /// identifier used with the dot notation is the name of the respective
 /// embedded field or property.
 class ManyToOne {
-  
   /// The operations that must be cascaded to the target of the association.
   final List<CascadeType> cascade;
-  
+
   /// Whether the association should be lazily loaded
   /// or must be eagerly fetched.
   final FetchType fetchType;
@@ -722,12 +669,11 @@ class ManyToOne {
   /// The entity class that is the target of the association.
   final String targetEntity;
 
-  const ManyToOne({
-    this.cascade = const [],
-    this.fetchType = FetchType.EAGER,
-    this.optional = true,
-    this.targetEntity = ""
-  });
+  const ManyToOne(
+      {this.cascade = const [],
+      this.fetchType = FetchType.EAGER,
+      this.optional = true,
+      this.targetEntity = ""});
 }
 
 /// Specifies a single-valued association to another entity class that has
@@ -748,30 +694,26 @@ class ManyToOne {
 /// embedded field or property.
 const ManyToOne manyToOne = ManyToOne();
 
-
 /// Specifies a composite primary key class that is mapped to multiple fields
 /// or properties of the entity. The names of the fields or properties in the
 /// primary key class and the primary key fields or properties of the entity
 /// must correspond and their types must be the same.
 class IdClass {
   final String value;
+
   const IdClass(this.value);
 }
-
 
 /// Specifies a composite primary key class that is mapped to multiple fields or
 /// properties of the entity. The names of the fields or properties in the
 /// primary key class and the primary key fields or properties of the entity
 /// must correspond and their types must be the same.
 class MapKey {
-  
   /// The name of the persistent field or property of the associated entity
   /// that is used as the map key.
   final String name;
-  
-  const MapKey({
-    this.name = ""
-  });
+
+  const MapKey({this.name = ""});
 }
 
 /// Specifies a composite primary key class that is mapped to multiple fields or
@@ -779,7 +721,6 @@ class MapKey {
 /// primary key class and the primary key fields or properties of the entity
 /// must correspond and their types must be the same.
 const MapKey mapKey = MapKey();
-
 
 /// Specifies the type of the map key for associations of type java.util.Map.
 /// The map key can be a basic type, an embeddable class, or an entity. If the
@@ -790,64 +731,60 @@ const MapKey mapKey = MapKey();
 /// (OneToMany or ManyToMany). The MapKey annotation is not used when
 /// MapKeyClass is specified and vice versa.
 class MapKeyClass {
-  
   /// The type of the map key.
   final String value;
 
   const MapKeyClass(this.value);
 }
 
-
 /// Specifies the mapping for the key column of a map whose map key is a basic
 /// type. If the name element is not specified, it defaults to the concatenation
 /// of the following: the name of the referencing relationship field or
 /// property; "_"; "KEY".
 class MapKeyColumn {
- 
   /// The SQL fragment that is used when generating the DDL for the column.
   final String columnDefinition;
-  
+
   /// Whether the column is included in SQL INSERT statements generated
   /// by the persistence provider.
   final bool insertable;
-  
+
   /// The column length.
   final int length;
-  
+
   /// The name of the map key column.
   final String name;
 
   /// Whether the database column is nullable.
   final bool nullable;
-  
+
   /// The precision for a decimal (exact numeric) column.
   final int precision;
-  
+
   /// The scale for a decimal (exact numeric) column.
   final int scale;
-  
+
   /// The name of the table that contains the column.
   final String table;
-  
+
   ///  Whether the column is a unique key.
   final bool unique;
-  
+
   /// Whether the column is included in SQL UPDATE statements
   /// generated by the persistence provider.
   final bool updatable;
-  
-  const MapKeyColumn({
-    this.columnDefinition = "",
-    this.insertable = true,
-    this.length = 255,
-    this.name = "",
-    this.nullable = false,
-    this.precision = 0,
-    this.scale = 0,
-    this.table = "",
-    this.unique = false,
-    this.updatable = true
-  });
+
+  const MapKeyColumn(
+      {this.columnDefinition = "",
+      this.insertable = true,
+      this.length = 255,
+      this.name = "",
+      this.nullable = false,
+      this.precision = 0,
+      this.scale = 0,
+      this.table = "",
+      this.unique = false,
+      this.updatable = true});
 }
 
 /// Specifies the mapping for the key column of a map whose map key is a basic
@@ -856,7 +793,6 @@ class MapKeyColumn {
 /// property; "_"; "KEY".
 const MapKeyColumn mapKeyColumn = MapKeyColumn();
 
-
 /// Specifies the enum type for a map key whose basic type is an enumerated
 /// type. The MapKeyEnumerated annotation can be applied to an element
 /// collection or relationship of type java.util.Map, in conjunction with the
@@ -864,13 +800,10 @@ const MapKeyColumn mapKeyColumn = MapKeyColumn();
 /// type is not specified or the MapKeyEnumerated annotation is not used, the
 /// enumerated type is assumed to be ORDINAL.
 class MapKeyEnumerated {
- 
   /// The type used in mapping a map key enum type.
   final EnumType value;
-  
-  const MapKeyEnumerated({
-    this.value = EnumType.ORDINAL
-  });
+
+  const MapKeyEnumerated({this.value = EnumType.ORDINAL});
 }
 
 /// Specifies the enum type for a map key whose basic type is an enumerated
@@ -881,56 +814,52 @@ class MapKeyEnumerated {
 /// enumerated type is assumed to be ORDINAL.
 const MapKeyEnumerated mapKeyEnumerated = MapKeyEnumerated();
 
-
 /// Specifies a mapping to an entity that is a map key. The map key join column
 /// is in the collection table, join table, or table of the target entity
 /// that is used to represent the map. If no MapKeyJoinColumn annotation
 /// is specified, a single join column is assumed and the default values apply.
 class MapKeyJoinColumn {
-  
   /// The SQL fragment that is used when generating the DDL for the column.
   final String columnDefinition;
-  
+
   /// Used to specify or control the generation of a foreign key constraint
   /// when table generation is in effect.
   final ForeignKey foreignKey;
-  
+
   /// Whether the column is included in SQL INSERT statements generated
   /// by the persistence provider.
   final bool insertable;
-  
+
   /// The name of the foreign key column.
   final String name;
-  
+
   /// Whether the foreign key column is nullable.
   final bool nullable;
-  
+
   /// The name of the column referenced by this foreign key column.
   final String referencedColumnName;
-  
+
   /// The name of the table that contains the column.
   final String table;
-  
+
   /// Whether the property is a unique key.
   final bool unique;
-  
+
   /// Whether the column is included in SQL UPDATE statements generated
   /// by the persistence provider.
   final bool updatable;
-  
-  const MapKeyJoinColumn({
-    this.columnDefinition = "",
-    this.foreignKey = const ForeignKey(
-      constraintMode: ConstraintMode.PROVIDER_DEFAULT
-    ),
-    this.referencedColumnName = "",
-    this.insertable = true,
-    this.nullable = false,
-    this.updatable = true,
-    this.unique = false,
-    this.table = "",
-    this.name = ""
-  });
+
+  const MapKeyJoinColumn(
+      {this.columnDefinition = "",
+      this.foreignKey =
+          const ForeignKey(constraintMode: ConstraintMode.PROVIDER_DEFAULT),
+      this.referencedColumnName = "",
+      this.insertable = true,
+      this.nullable = false,
+      this.updatable = true,
+      this.unique = false,
+      this.table = "",
+      this.name = ""});
 }
 
 /// Specifies a mapping to an entity that is a map key. The map key join column
@@ -939,40 +868,33 @@ class MapKeyJoinColumn {
 /// is specified, a single join column is assumed and the default values apply.
 const MapKeyJoinColumn mapKeyJoinColumn = MapKeyJoinColumn();
 
-
 /// Supports composite map keys that reference entities. The MapKeyJoinColumns
 /// annotation groups MapKeyJoinColumn annotations. When the MapKeyJoinColumns
 /// annotation is used, both the name and the referencedColumnName elements
 /// must be specified in each of the grouped MapKeyJoinColumn annotations.
 class MapKeyJoinColumns {
-  
   /// Used to specify or control the generation of a foreign key constraint
   /// when table generation is in effect.
   final ForeignKey foreignKey;
-  
+
   /// The map key join columns that are used to map to the entity that is the map key.
   final List<MapKeyJoinColumn> value;
-  
-  const MapKeyJoinColumns({
-    this.foreignKey = const ForeignKey(
-      constraintMode: ConstraintMode.PROVIDER_DEFAULT
-    ),
-    @required this.value
-  });
+
+  const MapKeyJoinColumns(
+      {this.foreignKey =
+          const ForeignKey(constraintMode: ConstraintMode.PROVIDER_DEFAULT),
+      @required this.value});
 }
 
 /// Type used to indicate a specific date mapping.
-enum TemporalType {
-  DATE, TIME, TIMESTAMP
-}
+enum TemporalType { DATE, TIME, TIMESTAMP }
 
 /// This annotation must be specified for persistent map keys of type Date
 /// and Calendar. It may only be specified for map keys of these types
 class MapKeyTemporal {
-  
   /// The type used in mapping.
   final TemporalType value;
-  
+
   const MapKeyTemporal(this.value);
 }
 
@@ -1000,7 +922,6 @@ class MappedSuperClass {
 /// annotations or corresponding XML elements.
 const MappedSuperClass mappedSuperClass = MappedSuperClass();
 
-
 /// Designates a ManyToOne or OneToOne relationship attribute that provides
 /// the mapping for an EmbeddedId primary key, an attribute within an EmbeddedId
 /// primary key, or a simple primary key of the parent entity. The value element
@@ -1009,14 +930,11 @@ const MappedSuperClass mappedSuperClass = MappedSuperClass();
 /// as the primary key of the entity referenced by the relationship, the value
 /// attribute is not specified.
 class MapsId {
-
   /// The name of the attribute within the composite key to which the
   /// relationship attribute corresponds.
   final String value;
-  
-  const MapsId({
-    this.value
-  });
+
+  const MapsId({this.value});
 }
 
 /// Designates a ManyToOne or OneToOne relationship attribute that provides
@@ -1028,22 +946,20 @@ class MapsId {
 /// attribute is not specified.
 const MapsId mapsId = MapsId();
 
-
 /// A NamedAttributeNode is a member element of a NamedEntityGraph.
 class NamedAttributeNode {
-
   /// The name of the attribute that must be included in the graph.
   final String value;
-  
+
   /// If the attribute references a Map type, this element can be used to
   /// specify a subgraph for the Key in the case of an Entity key type.
   final String keySubgraph;
-  
+
   /// If the attribute references a managed type that has its own
   /// AttributeNodes, this element is used to refer to that
   /// NamedSubgraph definition.
   final String subgraph;
-  
+
   const NamedAttributeNode({
     @required this.value,
     this.keySubgraph = "",
@@ -1051,49 +967,43 @@ class NamedAttributeNode {
   });
 }
 
-
 /// A NamedSubgraph is a member element of a NamedEntityGraph. The NamedSubgraph
 /// is only referenced from within a NamedEntityGraph and can not be referenced
 /// independently. It is referenced by its name from a NamedAttributeNode
 /// element of the NamedEntityGraph.
 class NamedSubgraph {
-
   /// The list of the attributes of the class that must be included.
   final List<NamedAttributeNode> attributeNodes;
-  
+
   /// The name of the subgraph as referenced from a NamedAttributeNode element.
   final String name;
-  
+
   /// The type represented by this subgraph.
   final String type;
-  
-  const NamedSubgraph({
-    @required this.name,
-    @required this.attributeNodes,
-    this.type
-  });
+
+  const NamedSubgraph(
+      {@required this.name, @required this.attributeNodes, this.type});
 }
 
 /// Used to specify the path and boundaries for a find operation or query.
 class NamedEntityGraph {
-
   /// A list of attributes of the entity that are included in this graph.
   final List<NamedAttributeNode> attributeNodes;
-  
+
   /// Includes all of the attributes of the annotated entity class as attribute
   /// nodes in the NamedEntityGraph without the need to explicitly list them.
   final bool includeAllAttributes;
-  
+
   /// The name of the entity graph.
   final String name;
-  
+
   /// A list of subgraphs that will add additional attributes for subclasses
   /// of the annotated entity class to the entity graph.
   final List<NamedSubgraph> subclassSubgraphs;
-  
+
   /// A list of subgraphs that are included in the entity graph.
   final List<NamedSubgraph> subgraphs;
-  
+
   const NamedEntityGraph({
     this.includeAllAttributes = false,
     this.subclassSubgraphs = const [],
@@ -1106,26 +1016,23 @@ class NamedEntityGraph {
 /// Used to specify the path and boundaries for a find operation or query.
 const NamedEntityGraph namedEntityGraph = NamedEntityGraph();
 
-
 /// Used to group NamedEntityGraph annotations.
 class NamedEntityGraphs {
-  
   final List<NamedEntityGraph> value;
+
   const NamedEntityGraphs(this.value);
 }
-
 
 /// Used to supply a query property or hint to the NamedQuery or
 /// NamedNativeQuery annotation. Vendor-specific hints that are not
 /// recognized by a provider are ignored.
 class QueryHint {
-  
   /// Name of the hint.
   final String name;
-  
+
   /// Value of the hint.
   final String value;
-  
+
   const QueryHint({
     @required this.value,
     @required this.name,
@@ -1136,42 +1043,39 @@ class QueryHint {
 /// persistence unit. The NamedNativeQuery annotation can be applied
 /// to an entity or mapped superclass.
 class NamedNativeQuery {
-
   /// The name used to refer to the query with the EntityManager methods
   /// that create query objects.
   final String name;
-  
+
   /// The SQL query string.
   final String query;
-  
+
   /// Query properties and hints.
   final List<QueryHint> hints;
-  
+
   /// The class of the result.
   final String resultClass;
-  
+
   /// The name of a SqlResultSetMapping, as defined in metadata.
   final String resultSetMapping;
-  
-  const NamedNativeQuery({
-    @required this.name,
-    @required this.query,
-    this.hints = const [],
-    this.resultClass = "void",
-    this.resultSetMapping = ""
-  });
+
+  const NamedNativeQuery(
+      {@required this.name,
+      @required this.query,
+      this.hints = const [],
+      this.resultClass = "void",
+      this.resultSetMapping = ""});
 }
 
 /// Specifies multiple native SQL named queries. Query names are scoped to the
 /// persistence unit. The NamedNativeQueries annotation can be applied to an
 /// entity or mapped superclass.
 class NamedNativeQueries {
-
   /// Array of NamedNativeQuery annotations.
   final List<NamedNativeQuery> value;
+
   const NamedNativeQueries(this.value);
 }
-
 
 enum LockModeType {
   NONE,
@@ -1180,14 +1084,13 @@ enum LockModeType {
   PESSIMISTIC_FORCE_INCREMENT,
   PESSIMISTIC_READ,
   PESSIMISTIC_WRITE,
-  
+
   /// Synonymous with OPTIMISTIC.
   READ,
-  
+
   /// Synonymous with OPTIMISTIC_FORCE_INCREMENT.
   WRITE
 }
-
 
 /// Specifies a static, named query in the Java Persistence query language.
 /// Query names are scoped to the persistence unit. The NamedQuery annotation
@@ -1197,34 +1100,32 @@ enum LockModeType {
 //            query="SELECT c FROM Customer c WHERE c.name LIKE :customName"
 //    )
 class NamedQuery {
-
   /// The name used to refer to the query with the EntityManager
   /// methods that create query objects.
   final String name;
-  
+
   /// The query string in the Java Persistence query language.
   final String query;
-  
+
   /// Query properties and hints.
   final List<QueryHint> hints;
-  
+
   /// The lock mode type to use in query execution.
   final LockModeType lockMode;
- 
-  const NamedQuery({
-    @required this.name,
-    @required this.query,
-    this.hints = const [],
-    this.lockMode = LockModeType.NONE
-  });
+
+  const NamedQuery(
+      {@required this.name,
+      @required this.query,
+      this.hints = const [],
+      this.lockMode = LockModeType.NONE});
 }
 
 /// Specifies multiple named Java Persistence query language queries.
 /// Query names are scoped to the persistence unit. The NamedQueries
 /// annotation can be applied to an entity or mapped superclass.
 class NamedQueries {
-
   final List<NamedQuery> value;
+
   const NamedQueries(this.value);
 }
 
@@ -1235,10 +1136,9 @@ class NamedQueries {
 /// Cacheable(false) means that the entity and its state must not be
 /// cached by the provider.
 class Cacheable {
-  
   /// Whether or not the entity should be cached.
   final bool value;
-  
+
   const Cacheable([this.value = true]);
 }
 
@@ -1249,7 +1149,6 @@ class Cacheable {
 /// Cacheable(false) means that the entity and its state must not be
 /// cached by the provider.
 const Cacheable cacheable = Cacheable();
-
 
 /// Specifies the table that is used for the mapping of collections of basic or
 /// embeddable types. Applied to the collection-valued field or property.
@@ -1306,31 +1205,30 @@ const Cacheable cacheable = Cacheable();
 ///       ...
 ///    }
 class CollectionTable {
-
   /// The catalog of the table.
   final String catalog;
-  
+
   /// Used to specify or control the generation of a foreign key constraint for
   /// the columns corresponding to the joinColumns element when table
   /// generation is in effect.
   final ForeignKey foreignKey;
-  
+
   /// Indexes for the table.
   final List<Index> indexes;
-  
+
   /// The foreign key columns of the collection table which
   /// reference the primary table of the entity.
   final List<JoinColumn> joinColumns;
-  
+
   /// The name of the collection table.
   final String name;
-  
+
   /// The schema of the table.
   final String schema;
-  
+
   /// Unique constraints that are to be placed on the table.
   final List<UniqueConstraint> uniqueConstraints;
-  
+
   const CollectionTable({
     this.catalog = "",
     this.schema = "",
@@ -1338,8 +1236,288 @@ class CollectionTable {
     this.uniqueConstraints = const [],
     this.joinColumns = const [],
     this.indexes = const [],
-    this.foreignKey = const ForeignKey(
-      constraintMode: ConstraintMode.PROVIDER_DEFAULT
-    ),
+    this.foreignKey =
+        const ForeignKey(constraintMode: ConstraintMode.PROVIDER_DEFAULT),
+  });
+}
+
+/// Specifies the mode of a parameter of a stored procedure query.
+enum ParameterMode {
+  /// Stored procedure input parameter
+  IN,
+
+  /// Stored procedure input/output parameter
+  INOUT,
+
+  /// Stored procedure output parameter
+  OUT,
+
+  /// Stored procedure reference cursor parameter.
+  REF_CURSOR
+}
+
+/// Specifies a parameter of a named stored procedure query. All parameters
+/// of a named stored procedure query must be specified.
+class StoredProcedureParameter {
+  /// todo
+  final String type;
+
+  /// Specifies whether the parameter is an IN, INOUT, OUT,
+  /// or REF_CURSOR parameter.
+  final ParameterMode mode;
+
+  /// The name of the parameter as defined by the stored
+  /// procedure in the database.
+  final String name;
+
+  const StoredProcedureParameter(
+      {@required this.type, this.mode = ParameterMode.IN, this.name = ""});
+}
+
+class NamedStoredProcedureQuery {
+  /// The name used to refer to the query with the EntityManager
+  /// methods that create stored procedure query objects.
+  final String name;
+
+  /// The name of the stored procedure in the database.
+  final String procedureName;
+
+  /// Query properties and hints.
+  final List<QueryHint> hints;
+
+  /// Information about all parameters of the stored procedure.
+  final List<StoredProcedureParameter> parameters;
+
+  /// The class or classes that are used to map the results.
+  final List<String> resultClasses;
+
+  /// The names of one or more result set mappings, as defined in metadata.
+  final List<String> resultSetMappings;
+
+  const NamedStoredProcedureQuery(
+      {@required this.name,
+      @required this.procedureName,
+      this.hints = const [],
+      this.parameters = const [],
+      this.resultClasses = const [],
+      this.resultSetMappings = const []});
+}
+
+/// Specifies multiple named stored procedure queries. Query names are scoped
+/// to the persistence unit. The NamedStoredProcedureQueries annotation can be
+/// applied to an entity or mapped superclass.
+class NamedStoredProcedureQueries {
+  /// Array of NamedStoredProcedureQuery annotations.
+  final List<NamedStoredProcedureQuery> value;
+
+  const NamedStoredProcedureQueries(this.value);
+}
+
+/// Specifies a many-valued association with one-to-many multiplicity. If the
+/// collection is defined using generics to specify the element type, the
+/// associated target entity type need not be specified; otherwise the target
+/// entity class must be specified. If the relationship is bidirectional, the
+/// mappedBy element must be used to specify the relationship field or property
+/// of the entity that is the owner of the relationship. The OneToMany
+/// annotation may be used within an embeddable class contained within an entity
+/// class to specify a relationship to a collection of entities. If the
+/// relationship is bidirectional, the mappedBy element must be used to specify
+/// the relationship field or property of the entity that is the owner of the
+/// relationship. When the collection is a Map, the cascade element
+/// and the orphanRemoval element apply to the map value.
+class OneToMany {
+  /// The operations that must be cascaded to the target of the association.
+  final List<CascadeType> cascade;
+
+  /// Whether the association should be lazily loaded or must be
+  /// eagerly fetched.
+  final FetchType fetch;
+
+  /// The field that owns the relationship.
+  final String mappedBy;
+
+  /// Whether to apply the remove operation to entities that have been
+  /// removed from the relationship and to cascade the remove
+  /// operation to those entities.
+  final bool orphanRemoval;
+
+  /// The entity class that is the target of the association.
+  final String targetEntity;
+
+  const OneToMany(
+      {this.cascade = const [],
+      this.fetch = FetchType.LAZY,
+      this.mappedBy = "",
+      this.orphanRemoval = false,
+      this.targetEntity = "void"});
+}
+
+/// Specifies a many-valued association with one-to-many multiplicity. If the
+/// collection is defined using generics to specify the element type, the
+/// associated target entity type need not be specified; otherwise the target
+/// entity class must be specified. If the relationship is bidirectional, the
+/// mappedBy element must be used to specify the relationship field or property
+/// of the entity that is the owner of the relationship. The OneToMany
+/// annotation may be used within an embeddable class contained within an entity
+/// class to specify a relationship to a collection of entities. If the
+/// relationship is bidirectional, the mappedBy element must be used to specify
+/// the relationship field or property of the entity that is the owner of the
+/// relationship. When the collection is a Map, the cascade element
+/// and the orphanRemoval element apply to the map value.
+const OneToMany oneToMany = OneToMany();
+
+/// Specifies a single-valued association to another entity that has one-to-one
+/// multiplicity. It is not normally necessary to specify the associated target
+/// entity explicitly since it can usually be inferred from the type of the
+/// object being referenced. If the relationship is bidirectional,
+/// the non-owning side must use the mappedBy element of the OneToOne annotation
+/// to specify the relationship field or property of the owning side.
+/// The OneToOne annotation may be used within an embeddable class to specify
+/// a relationship from the embeddable class to an entity class.
+/// If the relationship is bidirectional and the entity containing the
+/// embeddable class is on the owning side of the relationship, the non-owning
+/// side must use the mappedBy element of the OneToOne annotation to specify the
+/// relationship field or property of the embeddable class. The dot (".")
+/// notation syntax must be used in the mappedBy element to indicate the
+/// relationship attribute within the embedded attribute. The value of each
+/// identifier used with the dot notation is the name of the respective
+/// embedded field or property.
+class OneToOne {
+  /// The operations that must be cascaded to the target of the association.
+  final List<CascadeType> cascade;
+
+  /// Whether the association should be lazily loaded or must be
+  /// eagerly fetched.
+  final FetchType fetch;
+
+  /// The field that owns the relationship.
+  final String mappedBy;
+
+  /// Whether to apply the remove operation to entities that have been
+  /// removed from the relationship and to cascade the remove
+  /// operation to those entities.
+  final bool orphanRemoval;
+
+  /// The entity class that is the target of the association.
+  final String targetEntity;
+
+  const OneToOne(
+      {this.cascade = const [],
+      this.fetch = FetchType.EAGER,
+      this.mappedBy = "",
+      this.orphanRemoval = false,
+      this.targetEntity = "void"});
+}
+
+/// Specifies a single-valued association to another entity that has one-to-one
+/// multiplicity. It is not normally necessary to specify the associated target
+/// entity explicitly since it can usually be inferred from the type of the
+/// object being referenced. If the relationship is bidirectional,
+/// the non-owning side must use the mappedBy element of the OneToOne annotation
+/// to specify the relationship field or property of the owning side.
+/// The OneToOne annotation may be used within an embeddable class to specify
+/// a relationship from the embeddable class to an entity class.
+/// If the relationship is bidirectional and the entity containing the
+/// embeddable class is on the owning side of the relationship, the non-owning
+/// side must use the mappedBy element of the OneToOne annotation to specify the
+/// relationship field or property of the embeddable class. The dot (".")
+/// notation syntax must be used in the mappedBy element to indicate the
+/// relationship attribute within the embedded attribute. The value of each
+/// identifier used with the dot notation is the name of the respective
+/// embedded field or property.
+const OneToOne oneToOne = OneToOne();
+
+/// Specifies the ordering of the elements of a collection valued association
+/// or element collection at the point when the association or collection is
+/// retrieved. The syntax of the value ordering element
+/// is an orderby_list, as follows:
+///    orderby_list::= orderby_item [,orderby_item]*
+///    orderby_item::= [property_or_field_name] [ASC | DESC]
+/// If ASC or DESC is not specified, ASC (ascending order) is assumed. If the
+/// ordering element is not specified for an entity association, ordering by the
+/// primary key of the associated entity is assumed. The property or field name
+/// must correspond to that of a persistent property or field of the associated
+/// class or embedded class within it. The properties or fields used in the
+/// ordering must correspond to columns for which comparison operators
+/// are supported. The dot (".") notation is used to refer to an attribute
+/// within an embedded attribute. The value of each identifier used with the dot
+/// notation is the name of the respective embedded field or property.
+/// The OrderBy annotation may be applied to an element collection. When OrderBy
+/// is applied to an element collection of basic type, the ordering will be by
+/// value of the basic objects and the property or field name is not used. When
+/// specifying an ordering over an element collection of embeddable type, the
+/// dot notation must be used to specify the attribute or attributes that
+/// determine the ordering. The OrderBy annotation is not used when an order
+/// column is specified
+class OrderBy {
+  /// An orderby_list.
+  final String value;
+
+  const OrderBy([this.value = ""]);
+}
+
+/// Specifies the ordering of the elements of a collection valued association
+/// or element collection at the point when the association or collection is
+/// retrieved. The syntax of the value ordering element
+/// is an orderby_list, as follows:
+///    orderby_list::= orderby_item [,orderby_item]*
+///    orderby_item::= [property_or_field_name] [ASC | DESC]
+/// If ASC or DESC is not specified, ASC (ascending order) is assumed. If the
+/// ordering element is not specified for an entity association, ordering by the
+/// primary key of the associated entity is assumed. The property or field name
+/// must correspond to that of a persistent property or field of the associated
+/// class or embedded class within it. The properties or fields used in the
+/// ordering must correspond to columns for which comparison operators
+/// are supported. The dot (".") notation is used to refer to an attribute
+/// within an embedded attribute. The value of each identifier used with the dot
+/// notation is the name of the respective embedded field or property.
+/// The OrderBy annotation may be applied to an element collection. When OrderBy
+/// is applied to an element collection of basic type, the ordering will be by
+/// value of the basic objects and the property or field name is not used. When
+/// specifying an ordering over an element collection of embeddable type, the
+/// dot notation must be used to specify the attribute or attributes that
+/// determine the ordering. The OrderBy annotation is not used when an order
+/// column is specified
+const OrderBy orderBy = OrderBy();
+
+/// Specifies a column that is used to maintain the persistent order of a list.
+/// The persistence provider is responsible for maintaining the order upon
+/// retrieval and in the database. The persistence provider is responsible for
+/// updating the ordering upon flushing to the database to reflect any
+/// insertion, deletion, or reordering affecting the list. The OrderColumn
+/// annotation is specified on a OneToMany or ManyToMany relationship or on an
+/// element collection. The OrderColumn annotation is specified on the side of
+/// the relationship that references the collection that is to be ordered. The
+/// order column is not visible as part of the state of the entity or embeddable
+/// class. The OrderBy annotation should be used for ordering that is visible as
+/// persistent state and maintained by the application. The OrderBy annotation
+/// is not used when OrderColumn is specified. The order column must be of
+/// integral type. The persistence provider maintains a contiguous (non-sparse)
+/// ordering of the values of the order column when updating the association or
+/// element collection. The order column value for the first element is 0
+class OrderColumn {
+  /// The SQL fragment that is used when generating the DDL for the column.
+  final String columnDefinition;
+
+  /// Whether the column is included in SQL INSERT statements generated
+  /// by the persistence provider.
+  final bool insertable;
+
+  /// The name of the ordering column.
+  final String name;
+
+  /// Whether the database column is nullable.
+  final bool nullable;
+
+  /// Whether the column is included in SQL UPDATE statements generated
+  /// by the persistence provider.
+  final bool updatable;
+
+  const OrderColumn({
+    this.name = "",
+    this.nullable = true,
+    this.insertable = true,
+    this.updatable = true,
+    this.columnDefinition = "",
   });
 }
