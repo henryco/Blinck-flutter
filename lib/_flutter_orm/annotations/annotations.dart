@@ -1521,3 +1521,623 @@ class OrderColumn {
     this.columnDefinition = "",
   });
 }
+
+
+/// Specifies a primary key column that is used as a foreign key to join to
+/// another table. It is used to join the primary table of an entity subclass in
+/// the JOINED mapping strategy to the primary table of its superclass; it is
+/// used within a SecondaryTable annotation to join a secondary table to a
+/// primary table; and it may be used in a OneToOne mapping in which the primary
+/// key of the referencing entity is used as a foreign key to the referenced
+/// entity. If no PrimaryKeyJoinColumn annotation is specified for a subclass
+/// in the JOINED mapping strategy, the foreign key columns are assumed
+/// to have the same names as the primary key columns of the primary
+/// table of the superclass.
+///
+///    Example: Customer and ValuedCustomer subclass
+///
+///    @Entity
+///    @Table(name="CUST")
+///    @Inheritance(strategy=JOINED)
+///    @DiscriminatorValue("CUST")
+///    class Customer { ... }
+///
+///    @Entity
+///    @Table(name="VCUST")
+///    @DiscriminatorValue("VCUST")
+///    @PrimaryKeyJoinColumn(name="CUST_ID")
+///    class ValuedCustomer extends Customer { ... }
+class PrimaryKeyJoinColumn {
+
+  /// The SQL fragment that is used when generating the DDL for the column.
+  final String columnDefinition;
+
+  /// Used to specify or control the generation of a foreign key constraint for
+  /// the primary key join column when table generation is in effect.
+  final ForeignKey foreignKey;
+  
+  /// The name of the primary key column of the current table.
+  final String name;
+  
+  /// The name of the primary key column of the table being joined to.
+  final String referencedColumnName;
+  
+  const PrimaryKeyJoinColumn({
+    this.name = "",
+    this.referencedColumnName = "",
+    this.columnDefinition = "",
+    this.foreignKey = const ForeignKey(
+      constraintMode: ConstraintMode.PROVIDER_DEFAULT
+    )
+  });
+}
+
+/// Specifies a primary key column that is used as a foreign key to join to
+/// another table. It is used to join the primary table of an entity subclass in
+/// the JOINED mapping strategy to the primary table of its superclass; it is
+/// used within a SecondaryTable annotation to join a secondary table to a
+/// primary table; and it may be used in a OneToOne mapping in which the primary
+/// key of the referencing entity is used as a foreign key to the referenced
+/// entity. If no PrimaryKeyJoinColumn annotation is specified for a subclass
+/// in the JOINED mapping strategy, the foreign key columns are assumed
+/// to have the same names as the primary key columns of the primary
+/// table of the superclass.
+///
+///    Example: Customer and ValuedCustomer subclass
+///
+///    @Entity
+///    @Table(name="CUST")
+///    @Inheritance(strategy=JOINED)
+///    @DiscriminatorValue("CUST")
+///    class Customer { ... }
+///
+///    @Entity
+///    @Table(name="VCUST")
+///    @DiscriminatorValue("VCUST")
+///    @PrimaryKeyJoinColumn(name="CUST_ID")
+///    class ValuedCustomer extends Customer { ... }
+const PrimaryKeyJoinColumn primaryKeyJoinColumn = PrimaryKeyJoinColumn();
+
+
+/// Groups PrimaryKeyJoinColumn annotations. It is used to map composite
+/// foreign keys.
+///    Example: ValuedCustomer subclass
+///
+///    @Entity
+///    @Table(name="VCUST")
+///    @DiscriminatorValue("VCUST")
+///    @PrimaryKeyJoinColumns({
+///        @PrimaryKeyJoinColumn(name="CUST_ID",
+///            referencedColumnName="ID"),
+///        @PrimaryKeyJoinColumn(name="CUST_TYPE",
+///            referencedColumnName="TYPE")
+///    })
+///    class ValuedCustomer extends Customer { ... }
+class PrimaryKeyJoinColumns {
+
+  /// Used to specify or control the generation of a foreign key constraint
+  /// when table generation is in effect.
+  final ForeignKey foreignKey;
+  
+  /// One or more PrimaryKeyJoinColumn annotations.
+  final List<PrimaryKeyJoinColumn> value;
+  
+  const PrimaryKeyJoinColumns({
+    @required this.value,
+    this.foreignKey = const ForeignKey(
+      constraintMode: ConstraintMode.PROVIDER_DEFAULT
+    ),
+  });
+}
+
+/// Specifies a secondary table for the annotated entity class. Specifying one
+/// or more secondary tables indicates that the data for the entity class is
+/// stored across multiple tables. If no SecondaryTable annotation is specified,
+/// it is assumed that all persistent fields or properties of the entity are
+/// mapped to the primary table. If no primary key join columns are specified,
+/// the join columns are assumed to reference the primary key columns of the
+/// primary table, and have the same names and types as the referenced primary
+/// key columns of the primary table.
+class SecondaryTable {
+
+  /// The name of the table.
+  final String name;
+  
+  /// The catalog of the table.
+  final String catalog;
+  
+  /// Used to specify or control the generation of a foreign key constraint for
+  /// the columns corresponding to the pkJoinColumns element when table
+  /// generation is in effect.
+  final ForeignKey foreignKey;
+  
+  ///  Indexes for the table.
+  final List<Index> indexes;
+  
+  /// The columns that are used to join with the primary table.
+  final List<PrimaryKeyJoinColumn> pkJoinColumns;
+  
+  /// The schema of the table.
+  final String schema;
+  
+  /// Unique constraints that are to be placed on the table.
+  final List<UniqueConstraint> uniqueConstraints;
+  
+  const SecondaryTable({
+    @required this.name,
+    this.catalog = "",
+    this.schema = "",
+    this.pkJoinColumns = const [],
+    this.uniqueConstraints = const [],
+    this.indexes = const [],
+    this.foreignKey = const ForeignKey(
+      constraintMode: ConstraintMode.PROVIDER_DEFAULT
+    )
+  });
+}
+
+/// Specifies multiple secondary tables for an entity.
+class SecondaryTables {
+  
+  /// The secondary tables for an entity.
+  final List<SecondaryTable> value;
+  const SecondaryTables(this.value);
+}
+
+/// Defines a primary key generator that may be referenced by name when a
+/// generator element is specified for the GeneratedValue annotation. A sequence
+/// generator may be specified on the entity class or on the primary key field
+/// or property. The scope of the generator name is global to the persistence
+/// unit (across all generator types).
+///   Example: @SequenceGenerator(name="EMP_SEQ", allocationSize=25)
+class SequenceGenerator {
+
+  /// A unique generator name that can be referenced by one or more classes to
+  /// be the generator for primary key values.
+  final String name;
+  
+  /// The amount to increment by when allocating sequence numbers from the sequence.
+  final int allocationSize;
+  
+  /// The catalog of the sequence generator.
+  final String catalog;
+  
+  /// The value from which the sequence object is to start generating.
+  final int initialValue;
+  
+  /// The schema of the sequence generator.
+  final String schema;
+  
+  /// The name of the database sequence object from which to obtain
+  /// primary key values.
+  final String sequenceName;
+  
+  const SequenceGenerator({
+    @required this.name,
+    this.sequenceName = "",
+    this.catalog = "",
+    this.schema = "",
+    this.initialValue = 1,
+    this.allocationSize = 50
+  });
+}
+
+/// Used in conjunction with the SqlResultSetMapping annotation or
+/// ConstructorResult annotation to map a column of the SELECT list of a SQL
+/// query. The name element references the name of a column in the SELECT list
+/// — i.e., column alias, if applicable. Scalar result types can be included in
+/// the query result by specifying this annotation in the metadata.
+class ColumnResult {
+
+  /// The name of a column in the SELECT clause of a SQL query
+  final String name;
+  
+  /// The type to which the column type is to be mapped.
+  final String type;
+  
+  const ColumnResult({
+    @required this.name,
+    this.type = "void"
+  });
+}
+
+/// Used in conjunction with the SqlResultSetMapping annotation to map the
+/// SELECT clause of a SQL query to a constructor. Applies a constructor for the
+/// target class, passing in as arguments values from the specified columns. All
+/// columns corresponding to arguments of the intended constructor must be
+/// specified using the columns element of the ConstructorResult annotation in
+/// the same order as that of the argument list of the constructor. Any entities
+/// returned as constructor results will be in either the new or detached state,
+/// depending on whether a primary key is retrieved for the constructed object.
+class ConstructorResult {
+
+  /// The mapping of columns in the SELECT list to the arguments of the intended
+  /// constructor, in order.
+  final List<ColumnResult> columns;
+  
+  /// The class whose constructor is to be invoked.
+  final String targetClass;
+  
+  const ConstructorResult({
+    @required this.targetClass,
+    @required this.columns,
+  });
+}
+
+/// Used in conjunction with the EntityResult annotation to map columns
+/// specified in the SELECT list of a SQL query to the properties or fields of
+/// an entity class.
+class FieldResult {
+
+  /// Name of the column in the SELECT clause - i.e., column aliases, if applicable.
+  final String column;
+  
+  /// Name of the persistent field or property of the class.
+  final String name;
+  
+  const FieldResult({
+    @required this.column,
+    @required this.name
+  });
+}
+
+/// Used in conjunction with the SqlResultSetMapping annotation to map the
+/// SELECT clause of a SQL query to an entity result. If this annotation is
+/// used, the SQL statement should select all of the columns that are mapped to
+/// the entity object. This should include foreign key columns to related
+/// entities. The results obtained when insufficient data is
+/// available are undefined.
+class EntityResult {
+
+  /// The class of the result.
+  final String entityClass;
+  
+  /// Specifies the column name (or alias) of the column in the SELECT list that
+  /// is used to determine the type of the entity instance.
+  final String discriminatorColumn;
+  
+  /// Maps the columns specified in the SELECT list of the query to the
+  /// properties or fields of the entity class.
+  final List<FieldResult> fields;
+  
+  const EntityResult({
+    @required this.entityClass,
+    this.discriminatorColumn,
+    this.fields
+  });
+}
+
+
+/// Specifies the mapping of the result of a native SQL query
+/// or stored procedure.
+///    Example:
+///
+///    Query q = em.createNativeQuery(
+///        "SELECT o.id AS order_id, " +
+///            "o.quantity AS order_quantity, " +
+///            "o.item AS order_item, " +
+///            "i.name AS item_name, " +
+///        "FROM Order o, Item i " +
+///        "WHERE (order_quantity > 25) AND (order_item = i.id)",
+///    "OrderResults");
+///
+///    @SqlResultSetMapping(name="OrderResults",
+///        entities={
+///            @EntityResult(entityClass=com.acme.Order.class, fields={
+///                @FieldResult(name="id", column="order_id"),
+///                @FieldResult(name="quantity", column="order_quantity"),
+///                @FieldResult(name="item", column="order_item")})},
+///        columns={
+///            @ColumnResult(name="item_name")}
+///    )
+///
+class SqlResultSetMapping {
+
+  /// The name given to the result set mapping, and used to refer to it in the
+  /// methods of the Query and StoredProcedureQuery APIs.
+  final String name;
+  
+  /// Specifies the result set mapping to constructors.
+  final List<ConstructorResult> classes;
+  
+  /// Specifies the result set mapping to scalar values.
+  final List<ColumnResult> columns;
+  
+  /// Specifies the result set mapping to entities.
+  final List<EntityResult> entities;
+  
+  const SqlResultSetMapping({
+    @required this.name,
+    this.classes = const [],
+    this.columns = const [],
+    this.entities = const [],
+  });
+}
+
+
+/// Is used to define one or more SqlResultSetMapping annotations.
+class SqlResultSetMappings {
+
+  /// One or more SqlResultSetMapping annotations.
+  final List<SqlResultSetMapping> value;
+  const SqlResultSetMappings(this.value);
+}
+
+
+/// Specifies the primary table for the annotated entity. Additional tables may
+/// be specified using SecondaryTable or SecondaryTables annotation. If no Table
+/// annotation is specified for an entity class, the default values apply.
+///
+///    Example:
+///
+///    @Entity
+///    @Table(name="CUST", schema="RECORDS")
+///    class Customer { ... }
+class Table {
+  
+  /// The catalog of the table.
+  final String catalog;
+  
+  /// Indexes for the table.
+  final List<Index> indexes;
+  
+  /// The name of the table.
+  final String name;
+  
+  /// The schema of the table.
+  final String schema;
+  
+  /// Unique constraints that are to be placed on the table.
+  final List<UniqueConstraint> uniqueConstraints;
+  
+  const Table({
+    this.name = "",
+    this.catalog = "",
+    this.schema = "",
+    this.indexes = const [],
+    this.uniqueConstraints = const [],
+  });
+}
+
+/// Specifies the primary table for the annotated entity. Additional tables may
+/// be specified using SecondaryTable or SecondaryTables annotation. If no Table
+/// annotation is specified for an entity class, the default values apply.
+///
+///    Example:
+///
+///    @Entity
+///    @Table(name="CUST", schema="RECORDS")
+///    class Customer { ... }
+const Table table = Table();
+
+
+/// This annotation must be specified for persistent fields or properties of
+/// type java.util.Date and java.util.Calendar. It may only be specified for
+/// fields or properties of these types. The Temporal annotation may be used in
+/// conjunction with the Basic annotation, the Id annotation, or the
+/// ElementCollection annotation (when the element collection value is of such a
+/// temporal type
+class Temporal {
+
+  /// The type used in mapping.
+  final TemporalType value;
+  const Temporal(this.value);
+}
+
+
+/// Specifies the version field or property of an entity class that serves as
+/// its optimistic lock value. The version is used to ensure integrity when
+/// performing the merge operation and for optimistic concurrency control.
+/// Only a single Version property or field should be used per class;
+/// applications that use more than one Version property or field will not be
+/// portable. The Version property should be mapped to the primary table for the
+/// entity class; applications that map the Version property to a table other
+/// than the primary table will not be portable.
+class Version {
+  const Version();
+}
+
+/// Specifies the version field or property of an entity class that serves as
+/// its optimistic lock value. The version is used to ensure integrity when
+/// performing the merge operation and for optimistic concurrency control.
+/// Only a single Version property or field should be used per class;
+/// applications that use more than one Version property or field will not be
+/// portable. The Version property should be mapped to the primary table for the
+/// entity class; applications that map the Version property to a table other
+/// than the primary table will not be portable.
+const Version version = Version();
+
+
+/// Defines a primary key generator that may be referenced by name when a
+/// generator element is specified for the GeneratedValue annotation. A table
+/// generator may be specified on the entity class or on the primary key field
+/// or property. The scope of the generator name is global to the persistence
+/// unit (across all generator types).
+class TableGenerator {
+
+  /// A unique generator name that can be referenced by one or more classes
+  /// to be the generator for id values.
+  final String name;
+  
+  /// The amount to increment by when allocating id numbers from the generator.
+  final int allocationSize;
+  
+  /// The catalog of the table.
+  final String catalog;
+  
+  /// Indexes for the table.
+  final List<Index> indexes;
+  
+  /// The initial value to be used to initialize the column that stores the last
+  /// value generated.
+  final int initialValue;
+  
+  /// Name of the primary key column in the table.
+  final String pkColumnName;
+  
+  /// The primary key value in the generator table that distinguishes this set
+  /// of generated values from others that may be stored in the table.
+  final String pkColumnValue;
+  
+  /// The schema of the table.
+  final String schema;
+  
+  /// Name of table that stores the generated id values.
+  final String table;
+  
+  /// Unique constraints that are to be placed on the table.
+  final List<UniqueConstraint> uniqueConstraints;
+  
+  /// Name of the column that stores the last value generated.
+  final String valueColumnName;
+  
+  const TableGenerator({
+    @required this.name,
+    this.table = "",
+    this.catalog = "",
+    this.schema = "",
+    this.pkColumnName = "",
+    this.pkColumnValue = "",
+    this.valueColumnName = "",
+    this.initialValue = 0,
+    this.allocationSize = 50,
+    this.uniqueConstraints = const [],
+    this.indexes = const [],
+  });
+}
+
+
+/// Specifies the conversion of a Basic field or property. It is not necessary
+/// to use the Basic annotation or corresponding XML element to specify
+/// the Basic type.
+class Convert {
+
+  /// The attributeName element must be specified unless the Convert annotation
+  /// is on an attribute of basic type or on an element collection of basic type
+  final String attributeName;
+  
+  /// Specifies the converter to be applied.
+  final String converter;
+  
+  /// Used to disable an auto-apply or inherited converter.
+  final bool disableConversion;
+  
+  const Convert({
+    this.attributeName = "",
+    this.converter = "void",
+    this.disableConversion = false
+  });
+}
+
+/// Specifies the conversion of a Basic field or property. It is not necessary
+/// to use the Basic annotation or corresponding XML element to specify
+/// the Basic type.
+const Convert convert = Convert();
+
+
+/// Specifies that the annotated class is a converter and defines its scope.
+/// A converter class must be annotated with the Converter annotation or defined
+/// in the object/relational mapping descriptor as a converter.
+class Converter {
+  final bool autoApply;
+  const Converter([
+    this.autoApply = false
+  ]);
+}
+
+/// Specifies that the annotated class is a converter and defines its scope.
+/// A converter class must be annotated with the Converter annotation or defined
+/// in the object/relational mapping descriptor as a converter.
+const Converter converter = Converter();
+
+/// Used to group Convert annotations. Multiple converters must not be applied
+/// to the same basic attribute.
+class Converts {
+  
+  /// The Convert mappings that are to be applied.
+  final List<Convert> value;
+  const Converts(this.value);
+}
+
+/// Defines supported types of the discriminator column.
+enum DiscriminatorType {
+  CHAR, INTEGER, STRING
+}
+
+/// Specifies the value of the discriminator column for entities of the given
+/// type. The DiscriminatorValue annotation can only be specified on a concrete
+/// entity class. If the DiscriminatorValue annotation is not specified and a
+/// discriminator column is used, a provider-specific function will be used to
+/// generate a value representing the entity type. If the DiscriminatorType is
+/// STRING, the discriminator value default is the entity name. The inheritance
+/// strategy and the discriminator column are only specified in the root of an
+/// entity class hierarchy or subhierarchy in which a different inheritance
+/// strategy is applied. The discriminator value, if not defaulted, should be
+/// specified for each entity class in the hierarchy.
+class DiscriminatorValue {
+
+  /// The value that indicates that the row is an entity of the annotated entity type.
+  final String value;
+  const DiscriminatorValue(this.value);
+}
+
+/// Specifies the discriminator column for the SINGLE_TABLE and JOINED
+/// Inheritance mapping strategies. The strategy and the discriminator column
+/// are only specified in the root of an entity class hierarchy or subhierarchy
+/// in which a different inheritance strategy is applied If the
+/// DiscriminatorColumn annotation is missing, and a discriminator column is
+/// required, the name of the discriminator column defaults to "DTYPE" and the
+/// discriminator type to DiscriminatorType.STRING.
+///
+///     Example:
+///
+///     @entity
+///     @Table(name="CUST")
+///     @Inheritance(strategy=SINGLE_TABLE)
+///     @DiscriminatorColumn(name="DISC", discriminatorType=STRING, length=20)
+///     class Customer { ... }
+///
+///     @entity
+///     class ValuedCustomer extends Customer { ... }
+class DiscriminatorColumn {
+
+  /// The SQL fragment that is used when generating the DDL for
+  /// the discriminator column.
+  final String columnDefinition;
+  
+  /// The type of object/column to use as a class discriminator.
+  final DiscriminatorType discriminatorType;
+  
+  /// The column length for String-based discriminator types.
+  final int length;
+  
+  /// The name of column to be used for the discriminator.
+  final String name;
+  
+  const DiscriminatorColumn({
+    this.name = "DTYPE",
+    this.discriminatorType = DiscriminatorType.STRING,
+    this.columnDefinition = "",
+    this.length = 31
+  });
+}
+
+/// Specifies the discriminator column for the SINGLE_TABLE and JOINED
+/// Inheritance mapping strategies. The strategy and the discriminator column
+/// are only specified in the root of an entity class hierarchy or subhierarchy
+/// in which a different inheritance strategy is applied If the
+/// DiscriminatorColumn annotation is missing, and a discriminator column is
+/// required, the name of the discriminator column defaults to "DTYPE" and the
+/// discriminator type to DiscriminatorType.STRING.
+///
+///     Example:
+///
+///     @entity
+///     @Table(name="CUST")
+///     @Inheritance(strategy=SINGLE_TABLE)
+///     @DiscriminatorColumn(name="DISC", discriminatorType=STRING, length=20)
+///     class Customer { ... }
+///
+///     @entity
+///     class ValuedCustomer extends Customer { ... }
+const DiscriminatorColumn discriminatorColumn = DiscriminatorColumn();

@@ -3,10 +3,13 @@
     <words>
       <w>cacheable</w>
       <w>cascadable</w>
+      <w>cust</w>
+      <w>dtype</w>
       <w>insertable</w>
       <w>orderby</w>
       <w>subgraph</w>
       <w>subgraphs</w>
+      <w>subhierarchy</w>
     </words>
   </dictionary>
 </component>
