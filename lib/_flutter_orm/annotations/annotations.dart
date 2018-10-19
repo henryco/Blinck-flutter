@@ -82,9 +82,9 @@ class ElementCollection {
   final FetchType fetch;
 
   /// The basic or embeddable class that is the element type of the collection.
-  final String targetClass;
+  final Type targetClass;
 
-  const ElementCollection({this.targetClass = "", this.fetch = FetchType.LAZY});
+  const ElementCollection({this.targetClass, this.fetch = FetchType.LAZY});
 }
 
 /// Specifies a collection of instances of a basic type or embeddable class.
@@ -615,12 +615,12 @@ class ManyToMany {
   final String mappedBy;
 
   /// The entity class that is the target of the association.
-  final String targetEntity;
+  final Type targetEntity;
 
   const ManyToMany(
       {this.cascade = const [],
       this.mappedBy = "",
-      this.targetEntity = "",
+      this.targetEntity,
       this.fetchType = FetchType.LAZY});
 }
 
@@ -672,13 +672,14 @@ class ManyToOne {
   final bool optional;
 
   /// The entity class that is the target of the association.
-  final String targetEntity;
+  final Type targetEntity;
 
   const ManyToOne(
       {this.cascade = const [],
       this.fetchType = FetchType.EAGER,
       this.optional = true,
-      this.targetEntity = ""});
+      this.targetEntity
+      });
 }
 
 /// Specifies a single-valued association to another entity class that has
@@ -704,7 +705,7 @@ const ManyToOne manyToOne = ManyToOne();
 /// primary key class and the primary key fields or properties of the entity
 /// must correspond and their types must be the same.
 class IdClass {
-  final String value;
+  final Type value;
 
   const IdClass(this.value);
 }
@@ -737,7 +738,7 @@ const MapKey mapKey = MapKey();
 /// MapKeyClass is specified and vice versa.
 class MapKeyClass {
   /// The type of the map key.
-  final String value;
+  final Type value;
 
   const MapKeyClass(this.value);
 }
@@ -984,7 +985,7 @@ class NamedSubgraph {
   final String name;
 
   /// The type represented by this subgraph.
-  final String type;
+  final Type type;
 
   const NamedSubgraph(
       {@required this.name, @required this.attributeNodes, this.type});
@@ -1059,7 +1060,7 @@ class NamedNativeQuery {
   final List<QueryHint> hints;
 
   /// The class of the result.
-  final String resultClass;
+  final Type resultClass;
 
   /// The name of a SqlResultSetMapping, as defined in metadata.
   final String resultSetMapping;
@@ -1068,7 +1069,7 @@ class NamedNativeQuery {
       {@required this.name,
       @required this.query,
       this.hints = const [],
-      this.resultClass = "void",
+      this.resultClass,
       this.resultSetMapping = ""});
 }
 
@@ -1264,8 +1265,8 @@ enum ParameterMode {
 /// Specifies a parameter of a named stored procedure query. All parameters
 /// of a named stored procedure query must be specified.
 class StoredProcedureParameter {
-  /// todo
-  final String type;
+  
+  final Type type;
 
   /// Specifies whether the parameter is an IN, INOUT, OUT,
   /// or REF_CURSOR parameter.
@@ -1294,7 +1295,7 @@ class NamedStoredProcedureQuery {
   final List<StoredProcedureParameter> parameters;
 
   /// The class or classes that are used to map the results.
-  final List<String> resultClasses;
+  final List<Type> resultClasses;
 
   /// The names of one or more result set mappings, as defined in metadata.
   final List<String> resultSetMappings;
@@ -1347,14 +1348,14 @@ class OneToMany {
   final bool orphanRemoval;
 
   /// The entity class that is the target of the association.
-  final String targetEntity;
+  final Type targetEntity;
 
   const OneToMany(
       {this.cascade = const [],
       this.fetch = FetchType.LAZY,
       this.mappedBy = "",
       this.orphanRemoval = false,
-      this.targetEntity = "void"});
+      this.targetEntity});
 }
 
 /// Specifies a many-valued association with one-to-many multiplicity. If the
@@ -1404,14 +1405,14 @@ class OneToOne {
   final bool orphanRemoval;
 
   /// The entity class that is the target of the association.
-  final String targetEntity;
+  final Type targetEntity;
 
   const OneToOne(
       {this.cascade = const [],
       this.fetch = FetchType.EAGER,
       this.mappedBy = "",
       this.orphanRemoval = false,
-      this.targetEntity = "void"});
+      this.targetEntity});
 }
 
 /// Specifies a single-valued association to another entity that has one-to-one
@@ -1738,11 +1739,11 @@ class ColumnResult {
   final String name;
   
   /// The type to which the column type is to be mapped.
-  final String type;
+  final Type type;
   
   const ColumnResult({
     @required this.name,
-    this.type = "void"
+    this.type
   });
 }
 
@@ -1761,7 +1762,7 @@ class ConstructorResult {
   final List<ColumnResult> columns;
   
   /// The class whose constructor is to be invoked.
-  final String targetClass;
+  final Type targetClass;
   
   const ConstructorResult({
     @required this.targetClass,
@@ -1795,7 +1796,7 @@ class FieldResult {
 class EntityResult {
 
   /// The class of the result.
-  final String entityClass;
+  final Type entityClass;
   
   /// Specifies the column name (or alias) of the column in the SELECT list that
   /// is used to determine the type of the entity instance.
