@@ -1,4 +1,4 @@
-import 'package:meta/meta.dart';
+part of florm_internal;
 
 /// Specifies that the class is an entity.
 /// This annotation is applied to the entity class.
@@ -879,7 +879,8 @@ class MapKeyJoinColumns {
   /// when table generation is in effect.
   final ForeignKey foreignKey;
 
-  /// The map key join columns that are used to map to the entity that is the map key.
+  /// The map key join columns that are used to map to the entity that
+  /// is the map key.
   final List<MapKeyJoinColumn> value;
 
   const MapKeyJoinColumns(
@@ -1698,7 +1699,8 @@ class SequenceGenerator {
   /// be the generator for primary key values.
   final String name;
   
-  /// The amount to increment by when allocating sequence numbers from the sequence.
+  /// The amount to increment by when allocating sequence
+  /// numbers from the sequence.
   final int allocationSize;
   
   /// The catalog of the sequence generator.
@@ -1771,7 +1773,8 @@ class ConstructorResult {
 /// an entity class.
 class FieldResult {
 
-  /// Name of the column in the SELECT clause - i.e., column aliases, if applicable.
+  /// Name of the column in the SELECT clause - i.e., column aliases,
+  /// if applicable.
   final String column;
   
   /// Name of the persistent field or property of the class.
@@ -2078,7 +2081,8 @@ enum DiscriminatorType {
 /// specified for each entity class in the hierarchy.
 class DiscriminatorValue {
 
-  /// The value that indicates that the row is an entity of the annotated entity type.
+  /// The value that indicates that the row is an entity of the
+  /// annotated entity type.
   final String value;
   const DiscriminatorValue(this.value);
 }

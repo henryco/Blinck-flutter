@@ -1,4 +1,4 @@
-import 'package:optional/optional.dart';
+part of florm_internal;
 
 abstract class FlormCrud<K, E> {
 	
