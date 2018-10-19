@@ -1,4 +1,4 @@
-import 'package:blinck_app/_flutter_orm/annotations/annotations.dart';
+import 'package:blinck_app/_florm/annotations/annotations.dart';
 
 @entity @table
 class ExampleEntity {
