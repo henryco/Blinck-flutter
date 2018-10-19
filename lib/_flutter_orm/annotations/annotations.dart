@@ -1,9 +1,5 @@
 import 'package:meta/meta.dart';
 
-class Annotations {
-  /*void*/
-}
-
 /// Specifies that the class is an entity.
 /// This annotation is applied to the entity class.
 class Entity {
