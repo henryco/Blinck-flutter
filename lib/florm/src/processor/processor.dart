@@ -1,30 +1,38 @@
-class VirtualTable {
-  
+class Table {
   final List<Row> _rows = [];
+  final List<Alter> _alters = [];
   final String _name;
-  
-  VirtualTable(this._name);
 
-  void addRow(Row row) => _rows.add(row);
-  
+  Table(this._name);
+
+  void row(Row row) => _rows.add(row);
+
+  void alter(Alter alter) => _alters.add(alter);
+
   String create() {
     if (this._name == null) throw new ArgumentError.notNull("name");
-    
+
     var buffer = new StringBuffer();
-    _rows.forEach((r) {
+    for (var r in _rows) {
       buffer.write(r);
-    });
-    
-    return "CREATE TABLE $_name (\n $buffer \n);";
+    }
+
+    var altBuff = new StringBuffer();
+    for (var a in _alters) {
+      altBuff.write(a.create(this._name));
+    }
+  
+
+    var buff = buffer.toString().trim();
+    return "CREATE TABLE $_name (\n ${buff.substring(0, buff.length - 1)} \n); \n $altBuff";
   }
 }
-
 
 class Row {
   final List<Column> _columns = [];
 
-  void addColumn(Column column) => _columns.add(column);
-  
+  void column(Column column) => _columns.add(column);
+
   @override
   String toString() {
     if (_columns == null) throw new ArgumentError.notNull("columns");
@@ -38,25 +46,40 @@ class Row {
   }
 }
 
+abstract class Alter {
+  String create(String table) {
+    return "ALTER TABLE $table ${alter()};\n";
+  }
+
+  String alter();
+}
+
+class FlormAlter extends Alter {
+  final String _value;
+
+  FlormAlter(this._value);
+
+  @override
+  String alter() => _value;
+}
 
 abstract class Column {
   String get value;
 }
 
-
-class ColumnComa implements Column {
-  @override
-  String get value => ",";
+class FlormTable extends Table {
+  FlormTable(String name) : super(name);
 }
 
-typedef String StringSupplier();
+class FlormColumn implements Column {
+  final String _value;
 
-
-class ColumnSupplier implements Column {
-  final StringSupplier supplier;
-
-  ColumnSupplier(this.supplier);
+  FlormColumn(this._value);
 
   @override
-  String get value => supplier();
+  String get value => _value;
+}
+
+class FlormRow extends Row {
+  FlormRow() : super();
 }

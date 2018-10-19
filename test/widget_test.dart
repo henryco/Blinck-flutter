@@ -9,7 +9,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:blinck_app/main.dart';
 
-import 'package:blinck_app/florm/src/processor/processor.dart' as P;
+import 'package:blinck_app/florm/src/processor/processor.dart';
+import 'package:blinck_app/florm/src/processor/column.dart' as C;
 
 void main() {
 //  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
@@ -33,12 +34,19 @@ void main() {
   
   test('BuilderTest', () async {
     
-    var table = new P.VirtualTable("SomeTable");
-    var row = new P.Row();
-    row.addColumn(new P.ColumnSupplier(() => "some_coll"));
-    row.addColumn(new P.ColumnComa());
+    var table = new FlormTable("SomeTable");
+    var row = new FlormRow();
+    row.column(new C.ColumnSupplier(() => "some_coll"));
+    row.column(FlormColumn("integer"));
     
-    table.addRow(row);
+    var row2 = new FlormRow();
+    row.column(new FlormColumn("testval"));
+    row.column(new FlormColumn("text"));
+    table.row(row2);
+    
+    var alter = new FlormAlter("ADD CONSTRAINT random UNIQUE(some_coll)");
+    table.alter(alter);
+    table.row(row);
    
     print(table.create());
   });
