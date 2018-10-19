@@ -1,16 +1,16 @@
 class Table {
   final List<Row> _rows = [];
   final List<Alter> _alters = [];
-  final String _name;
+  final String name;
 
-  Table(this._name);
+  Table(this.name);
 
   void row(Row row) => _rows.add(row);
 
   void alter(Alter alter) => _alters.add(alter);
 
   String create() {
-    if (this._name == null) throw new ArgumentError.notNull("name");
+    if (this.name == null) throw new ArgumentError.notNull("name");
 
     var buffer = new StringBuffer();
     for (var r in _rows) {
@@ -19,12 +19,12 @@ class Table {
 
     var altBuff = new StringBuffer();
     for (var a in _alters) {
-      altBuff.write(a.create(this._name));
+      altBuff.write(a.create(this.name));
     }
   
 
     var buff = buffer.toString().trim();
-    return "CREATE TABLE $_name (\n ${buff.substring(0, buff.length - 1)} \n); \n$altBuff";
+    return "CREATE TABLE $name (\n ${buff.substring(0, buff.length - 1)} \n); \n$altBuff";
   }
 }
 
