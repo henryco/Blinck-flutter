@@ -24,7 +24,7 @@ class Table {
   
 
     var buff = buffer.toString().trim();
-    return "CREATE TABLE $_name (\n ${buff.substring(0, buff.length - 1)} \n); \n $altBuff";
+    return "CREATE TABLE $_name (\n ${buff.substring(0, buff.length - 1)} \n); \n$altBuff";
   }
 }
 
@@ -42,7 +42,7 @@ class Row {
       buffer..write(" ")..write(c.value);
     });
 
-    return "$buffer\n";
+    return "$buffer,\n";
   }
 }
 
