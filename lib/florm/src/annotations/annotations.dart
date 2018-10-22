@@ -1,4 +1,6 @@
-part of florm_internal;
+
+
+import 'package:meta/meta.dart';
 
 /// Specifies that the class is an entity.
 /// This annotation is applied to the entity class.

@@ -1,3 +1,4 @@
 library florm;
 
-export 'florm_internal.dart' show FlormCrud;
+export 'src/annotations/annotations.dart';
+export 'src/crud/florm_crud.dart';

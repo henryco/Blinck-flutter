@@ -1,10 +1,11 @@
-part of florm_internal;
+import 'package:optional/optional.dart';
+
 
 abstract class FlormCrud<K, E> {
 	
-	E save(E entity);
+	S save<S extends E>(S entity);
 	
-	Iterable<E> saveAll(Iterable<E> entities);
+	Iterable<S> saveAll<S extends E>(Iterable<S> entities);
 	
 	Optional<E> findById(K id);
 	
