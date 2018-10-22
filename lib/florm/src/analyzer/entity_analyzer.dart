@@ -9,6 +9,6 @@ abstract class EntityAnalyzer {
 	
 	}
 	
-	
+	// todo
 	
 }

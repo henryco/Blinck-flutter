@@ -4,7 +4,7 @@ import 'package:analyzer/dart/element/visitor.dart';
 import 'package:meta/meta.dart';
 import './entity_analyzer.dart';
 
-class LibAnalyzer extends RecursiveElementVisitor<Null> {
+class LibAnalyzer {
 	
 	final EntityAnalyzer entityAnalyzer;
 
@@ -13,14 +13,20 @@ class LibAnalyzer extends RecursiveElementVisitor<Null> {
   });
 	
 	void visitLibrary(LibraryElement library) {
-		// todo
+		new _Analyzer(this).visitLibraryElement(library);
 	}
+	
+}
+
+class _Analyzer extends RecursiveElementVisitor<Null> {
+	
+	final LibAnalyzer $;
+
+  _Analyzer(this.$);
 	
 	@override
 	Null visitClassElement(ClassElement element) {
 		// todo
 	}
-	
-	
 	
 }
