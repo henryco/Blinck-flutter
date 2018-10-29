@@ -23,6 +23,7 @@ dependencies:
   path_provider: '>=0.3.0'
   sqflite: any
   optional: ^3.0.0+2
+  shared_preferences: ^0.4.3
 
 dev_dependencies:
   flutter_test:

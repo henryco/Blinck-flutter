@@ -12,7 +12,11 @@ class Router {
 	
 	static Map<String, WidgetBuilder> get routes => {
 		
-		SCREEN_LOGIN: (c) => LoginScreen(loginService: Dependencies.loginService),
+		SCREEN_LOGIN: (c) => LoginScreen(
+			loginService: Dependencies.loginService,
+			tokenStorageService: Dependencies.tokenStorageService,
+		),
+		
 		SCREEN_MAIN: (C) => MainScreen()
 	};
 
