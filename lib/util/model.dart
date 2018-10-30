@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import './util.dart';
 export './util.dart';
 
 abstract class ViewState
@@ -16,10 +15,11 @@ abstract class ViewState
 	void initState() {
 		super.initState();
 		this.$logic = createLogic();
-		$logic.bind(this);
+		$logic._bind(this);
 	}
 	
-	void update(VoidCallback callback) {
+	@protected
+	void _update(VoidCallback callback) {
 		this.setState(callback);
 	}
 	
@@ -33,7 +33,8 @@ abstract class ViewLogic
 	WIDGET get $ => $state.widget;
 	U $state;
 	
-	void bind(U state) async {
+	@protected
+	void _bind(U state) async {
 		this.$state = state;
 		this.initialize();
 	}
@@ -42,7 +43,7 @@ abstract class ViewLogic
 	void initialize() { }
 	
 	void update(VoidCallback callback) {
-		$state.update(callback);
+		$state._update(callback);
 	}
 	
 }
