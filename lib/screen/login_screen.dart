@@ -1,6 +1,7 @@
 import 'package:blinck_app/service/storage/token/i_token_storage_service.dart';
 import 'package:blinck_app/service/login/i_login_service.dart';
 import 'package:blinck_app/screen/router.dart';
+import 'package:blinck_app/util/model.dart';
 import 'package:blinck_app/util/util.dart';
 import 'package:flutter/material.dart';
 
@@ -17,28 +18,14 @@ class LoginScreen extends StatefulWidget {
 	}) : super(key: key);
 	
 	@override
-	State<LoginScreen> createState() => new _LoginScreenState();
+	State<LoginScreen> createState() => new _State();
 }
 
 
-class _LoginScreenState extends State<LoginScreen> {
-	final _Logic $ = new _Logic();
-	
-	bool authorized = false;
-	
+class _State extends ViewState<LoginScreen, _Logic> {
 	
 	@override
-	void initState() {
-		super.initState();
-		
-		$.tryToLogin(this).then((v) {
-			setState(() {
-				authorized = v;
-				print('status: $v');
-			});
-		});
-	}
-	
+	_Logic createLogic() => new _Logic();
 	
 	@override
 	Widget build(BuildContext context) {
@@ -54,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
 			body: Center(
 				child: Column(
 					mainAxisAlignment: MainAxisAlignment.center,
-					children: $ifs(authorized, _authorized, _unauthorized),
+					children: $ifs($.authorized, _authorized, _unauthorized),
 				),
 			),
 			
@@ -78,34 +65,48 @@ class _LoginScreenState extends State<LoginScreen> {
 		return [
 		
 			RaisedButton(
-				onPressed: () => $.onLoginButtonPressed(this),
+				onPressed: () => $.onLoginButtonPressed(),
 				child: Text('Login with Facebook'),
 			),
 			
 		];
 	}
 	
-	
 }
 
 
-class _Logic {
+class _Logic extends ViewLogic<LoginScreen, _State> {
 	
 	
-	Future<bool> tryToLogin(_LoginScreenState $) async {
-		String token = await $.widget.tokenStorageService.currentFacebookToken();
+	bool authorized = false;
+	
+	
+	@override
+	void initialize() async {
+		bool fbToken = await tryToLogin();
+		
+		update(() {
+			authorized = fbToken;
+			print('status: $fbToken');
+		});
+	}
+	
+	
+	Future<bool> tryToLogin() async {
+		String token = await $.tokenStorageService.currentFacebookToken();
 		print('trying');
 		return token != null;
 	}
 	
 	
-	onLoginButtonPressed (_LoginScreenState $) async {
-  	var token = await $.widget.loginService.initiateLoginProcess();
-  	var saved = await $.widget.tokenStorageService.saveFacebookToken(token.token);
+	onLoginButtonPressed () async {
+  	var token = await $.loginService.initiateLoginProcess();
+  	var saved = await $.tokenStorageService.saveFacebookToken(token.token);
   	
   	print('saved: $saved');
-  	Navigator.pushReplacementNamed($.context, Router.SCREEN_MAIN);
+  	Navigator.pushReplacementNamed($context, Router.SCREEN_MAIN);
   }
+  
 
 	
 }
