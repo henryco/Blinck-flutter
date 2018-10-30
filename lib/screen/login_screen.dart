@@ -26,7 +26,11 @@ class _LoginScreenState extends State<LoginScreen> {
 	
 	bool authorized = false;
 	
-	_LoginScreenState() {
+	
+	@override
+	void initState() {
+		super.initState();
+		
 		$.tryToLogin(this).then((v) {
 			setState(() {
 				authorized = v;
@@ -34,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
 			});
 		});
 	}
+	
 	
 	@override
 	Widget build(BuildContext context) {
