@@ -4,12 +4,17 @@ import './util.dart';
 export './util.dart';
 
 abstract class ViewState
-<WIDGET extends StatefulWidget, LOGIC>
-	extends State<WIDGET> {
+<WIDGET extends StatefulWidget, LOGIC> extends State<WIDGET> {
 	
 	ViewLogic <WIDGET, ViewState<WIDGET, LOGIC>> $logic;
-	ViewLogic <WIDGET, ViewState<WIDGET, LOGIC>> createLogic();
 	LOGIC get $ => $logic as LOGIC;
+	
+	ViewState([ViewLogic <WIDGET, ViewState<WIDGET, LOGIC>> logic]) {
+		this.$logic = logic;
+	}
+	
+	/// Overridable
+	ViewLogic <WIDGET, ViewState<WIDGET, LOGIC>> createLogic() => $logic;
 	
 	@override
 	void initState() {
@@ -37,11 +42,11 @@ abstract class ViewLogic
 		this.initialize();
 	}
 	
-	void initialize();
+	/// Overridable
+	void initialize() { }
 	
 	void update(VoidCallback callback) {
 		$state.update(callback);
 	}
-	
 	
 }
