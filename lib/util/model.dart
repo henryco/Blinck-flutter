@@ -9,12 +9,8 @@ abstract class ViewState
 	ViewLogic <WIDGET, ViewState<WIDGET, LOGIC>> $logic;
 	LOGIC get $ => $logic as LOGIC;
 	
-	ViewState([ViewLogic <WIDGET, ViewState<WIDGET, LOGIC>> logic]) {
-		this.$logic = logic;
-	}
-	
 	/// Overridable
-	ViewLogic <WIDGET, ViewState<WIDGET, LOGIC>> createLogic() => $logic;
+	ViewLogic <WIDGET, ViewState<WIDGET, LOGIC>> createLogic();
 	
 	@override
 	void initState() {
