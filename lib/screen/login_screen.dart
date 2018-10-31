@@ -53,7 +53,7 @@ class _State extends ViewState<LoginScreen, _Logic> {
 		print('+');
 		return [
 		
-			Text('AUTHORIZED')
+			Text('TOKEN: ${$.authorized}')
 		
 		];
 	}
@@ -83,26 +83,30 @@ class _Logic extends ViewLogic<LoginScreen, _State> {
 	@override
 	void initialize() async {
 		bool fbToken = await tryToLogin();
+		$.tokenStorageService.removeFacebookToken();
 		
 		update(() {
 			authorized = fbToken;
-			print('status: $fbToken');
 		});
 	}
 	
 	
 	Future<bool> tryToLogin() async {
-		String token = await $.tokenStorageService.currentFacebookToken();
-		print('trying');
+		Token token = await $.tokenStorageService.currentFacebookToken();
+
+		print('TOKEN: $token');
+		
 		return token != null;
 	}
 	
 	
 	onLoginButtonPressed () async {
   	var token = await $.loginService.initiateLoginProcess();
-  	var saved = await $.tokenStorageService.saveFacebookToken(token.token);
+  	var saved = await $.tokenStorageService.saveFacebookToken(
+		  new Token(uid: token.userId, token: token.token)
+	  );
   	
-  	print('saved: $saved');
+  	
   	Navigator.pushReplacementNamed($context, Router.SCREEN_MAIN);
   }
   

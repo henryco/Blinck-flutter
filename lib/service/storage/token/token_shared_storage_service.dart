@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:blinck_app/service/storage/token/i_token_storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,17 +8,22 @@ class TokenSharedStorageService extends ITokenStorageService {
 	
 	
 	@override
-	Future<bool> saveFacebookToken(String token) async {
+	Future<bool> saveFacebookToken(Token token) async {
 		final prefs = await SharedPreferences.getInstance();
-		return await prefs.setString(TOKEN_FB, token);
+		var data = (token == null ? null : <String>[token.uid, token.token]);
+		return prefs.setStringList(TOKEN_FB, data);
 	}
 	
 	@override
-	Future<String> currentFacebookToken() async {
+	Future<Token> currentFacebookToken() async {
 		final prefs = await SharedPreferences.getInstance();
-		return prefs.getString(TOKEN_FB);
+		var data = prefs.getStringList(TOKEN_FB);
+		return data != null ? new Token(uid: data[0], token: data[1]) : null;
 	}
 	
-	
+	@override
+	Future<bool> removeFacebookToken() async {
+		return saveFacebookToken(null);
+	}
 	
 }
