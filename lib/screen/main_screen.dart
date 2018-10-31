@@ -1,3 +1,4 @@
+import 'package:blinck_app/util/model.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
@@ -7,11 +8,14 @@ class MainScreen extends StatefulWidget {
 	MainScreen({Key key,}) : super(key: key);
 	
 	@override
-	_MainScreenState createState() => new _MainScreenState();
+	State<MainScreen> createState() => new _MainScreenModel();
 }
 
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenModel extends ViewModel<MainScreen, _MainScreenLogic> {
+	
+	@override
+	_MainScreenLogic createLogic() => new _MainScreenLogic();
 	
 	@override
 	Widget build(BuildContext context) {
@@ -32,4 +36,16 @@ class _MainScreenState extends State<MainScreen> {
 		
 		);
 	}
+	
+}
+
+
+class _MainScreenLogic extends ViewLogic<MainScreen, _MainScreenModel> {
+	
+	
+	@override
+	void initialize() {
+	
+	}
+	
 }
