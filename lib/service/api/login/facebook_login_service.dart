@@ -3,7 +3,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class FacebookLoginService implements ILoginService {
 	
-	final List<String> _permissions = [
+	static const List<String> _permissions = const [
 		"user_birthday",
 		"user_location",
 		"user_likes",
@@ -13,6 +13,7 @@ class FacebookLoginService implements ILoginService {
 		"public_profile",
 	];
 	
+	const FacebookLoginService();
 	
 	@override
 	Future<AccessToken> initiateLoginProcess() async {

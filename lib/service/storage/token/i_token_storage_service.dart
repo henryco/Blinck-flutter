@@ -1,15 +1,17 @@
 import 'package:meta/meta.dart';
 
 abstract class ITokenStorageService {
-  
-  @virtual
+	
+	@virtual
   Future<bool> saveFacebookToken(Token token);
-  
-  @virtual
-  Future<Token> currentFacebookToken();
 
   @virtual
+  Future<Token> currentFacebookToken();
+  
+  @virtual
   Future<bool> removeFacebookToken();
+  
+  const ITokenStorageService();
 }
 
 class Token {

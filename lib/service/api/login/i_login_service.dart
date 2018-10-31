@@ -1,6 +1,11 @@
+import 'package:meta/meta.dart';
+
 abstract class ILoginService {
 
+	@virtual
 	Future<AccessToken> initiateLoginProcess();
+	
+	const ILoginService();
 }
 
 class AccessToken {

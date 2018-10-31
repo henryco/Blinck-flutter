@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 export './util.dart';
 
-abstract class ViewState<WIDGET extends StatefulWidget, LOGIC>
+abstract class ViewModel<WIDGET extends StatefulWidget, LOGIC>
     extends State<WIDGET> {
-  ViewLogic<WIDGET, ViewState<WIDGET, LOGIC>> $logic;
+  ViewLogic<WIDGET, ViewModel<WIDGET, LOGIC>> $logic;
 
   LOGIC get $ => $logic as LOGIC;
 
   /// Overridable
   @protected
-  ViewLogic<WIDGET, ViewState<WIDGET, LOGIC>> createLogic();
+  ViewLogic<WIDGET, ViewModel<WIDGET, LOGIC>> createLogic();
 
   @override
   void initState() {
@@ -23,7 +23,7 @@ abstract class ViewState<WIDGET extends StatefulWidget, LOGIC>
   void _update(VoidCallback callback) => this.setState(callback);
 }
 
-abstract class ViewLogic<WIDGET extends StatefulWidget, U extends ViewState> {
+abstract class ViewLogic<WIDGET extends StatefulWidget, U extends ViewModel> {
   BuildContext get $context => $state.context;
 
   WIDGET get $ => $state.widget;

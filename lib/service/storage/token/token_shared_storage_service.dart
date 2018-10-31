@@ -6,6 +6,7 @@ class TokenSharedStorageService extends ITokenStorageService {
 	
 	static const String TOKEN_FB = "fb_token";
 	
+	const TokenSharedStorageService();
 	
 	@override
 	Future<bool> saveFacebookToken(Token token) async {
