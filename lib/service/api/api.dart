@@ -1,6 +1,6 @@
 abstract class ApiEndpoints {
 	
-	static const String SERVER_URL = "http://174.138.0.194:8080";
+	static const String SERVER_URL = "http://174.138.0.194:1999";
 	
 }
 

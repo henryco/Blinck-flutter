@@ -1,18 +1,20 @@
 import 'package:blinck_app/service/storage/token/i_token_storage_service.dart';
-import 'package:blinck_app/service/api/login/facebook/i_login_service.dart';
+import 'package:blinck_app/service/api/login/facebook/i_login_service.dart' as Fb;
+import 'package:blinck_app/service/api/login/internal/i_login_service.dart' as App;
 import 'package:blinck_app/screen/router.dart';
+import 'package:blinck_app/service/storage/token/token_shared_storage_service.dart';
 import 'package:blinck_app/util/model.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
 	
-	final String title = "LoginScreen";
-	final ILoginService loginService;
-	final ITokenStorageService tokenStorageService;
+	final App.ILoginService appLoginService;
+	final Fb.ILoginService fbLoginService;
 	
 	LoginScreen({
-		@required this.tokenStorageService,
-		@required this.loginService,
+		@required this.appLoginService,
+		@required this.fbLoginService,
+		
 		Key key,
 	}) : super(key: key);
 	
@@ -33,7 +35,7 @@ class _State extends ViewModel<LoginScreen, _Logic> {
 			
 			
 			appBar: AppBar(
-				title: Text(widget.title),
+				title: Text("LoginScreen"),
 			),
 			
 			
@@ -48,23 +50,23 @@ class _State extends ViewModel<LoginScreen, _Logic> {
 		);
 	}
 	
-	
+	/// SHOW SPLASH SCREEN
 	List<Widget> _authorized() {
 		print('+');
 		return [
 		
-			Text('TOKEN: ${$.authorized}')
-		
+			// todo SPLASH SCREEN
+			Text('SPLASH SCREEN')
 		];
 	}
 	
-	
+	/// show login button
 	List<Widget> _unauthorized() {
 		print('-');
 		return [
 		
 			RaisedButton(
-				onPressed: () => $.onLoginButtonPressed(),
+				onPressed: () => $.loginToFacebook(),
 				child: Text('Login with Facebook'),
 			),
 			
@@ -76,39 +78,38 @@ class _State extends ViewModel<LoginScreen, _Logic> {
 
 class _Logic extends ViewLogic<LoginScreen, _State> {
 	
-	
+	ITokenStorageService _tokenStorage = TokenSharedStorageService.getInstance();
 	bool authorized = false;
-	
 	
 	@override
 	void initialize() async {
-		bool fbToken = await tryToLogin();
-		$.tokenStorageService.removeFacebookToken();
+		final token = await _tokenStorage.currentFacebookToken();
 		
 		update(() {
-			authorized = fbToken;
+			authorized = token != null;
+			if (authorized) loginDirectly();
 		});
 	}
 	
-	
-	Future<bool> tryToLogin() async {
-		Token token = await $.tokenStorageService.currentFacebookToken();
-
-		print('TOKEN: $token');
+	void loginToFacebook() async {
+		final token = await $.fbLoginService.initiateLoginProcess();
+		await _tokenStorage.saveFacebookToken(
+			new Token(uid: token.userId, token: token.token)
+		);
 		
-		return token != null;
+		loginDirectly();
+	}
+
+	void loginDirectly() async {
+		final token = await _tokenStorage.currentFacebookToken();
+		final authorization = await $.appLoginService.loginUser(
+			App.LoginForm(fbToken: token.token, fbId: token.uid)
+		);
+		
+		await _tokenStorage.saveSessionString(authorization);
+		Navigator.pushReplacementNamed($context, Router.SCREEN_MAIN);
 	}
 	
-	
-	onLoginButtonPressed () async {
-  	var token = await $.loginService.initiateLoginProcess();
-  	var saved = await $.tokenStorageService.saveFacebookToken(
-		  new Token(uid: token.userId, token: token.token)
-	  );
-  	
-  	
-  	Navigator.pushReplacementNamed($context, Router.SCREEN_MAIN);
-  }
   
 
 	

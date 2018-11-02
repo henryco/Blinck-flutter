@@ -1,7 +1,9 @@
 import 'package:meta/meta.dart';
 
 abstract class ITokenStorageService {
-	
+  
+  const ITokenStorageService();
+  
 	@virtual
   Future<bool> saveFacebookToken(Token token);
 
@@ -11,7 +13,15 @@ abstract class ITokenStorageService {
   @virtual
   Future<bool> removeFacebookToken();
   
-  const ITokenStorageService();
+  @virtual
+	Future<bool> saveSessionString(String token);
+  
+  @virtual
+  Future<bool> removeSessionString();
+  
+  @virtual
+  Future<String> currentSessionString();
+
 }
 
 class Token {

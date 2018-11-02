@@ -1,11 +1,17 @@
+import 'package:blinck_app/service/api/session/session.dart';
+import 'package:blinck_app/service/storage/token/i_token_storage_service.dart';
+import 'package:blinck_app/service/storage/token/token_shared_storage_service.dart';
 import 'package:blinck_app/util/model.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
 	
-	final String title = "MainScreen";
+	final ISessionService sessionService;
 	
-	MainScreen({Key key,}) : super(key: key);
+	MainScreen({
+		@required this.sessionService,
+		Key key,
+	}) : super(key: key);
 	
 	@override
 	State<MainScreen> createState() => new _MainScreenModel();
@@ -22,14 +28,16 @@ class _MainScreenModel extends ViewModel<MainScreen, _MainScreenLogic> {
 		return new Scaffold(
 			
 			appBar: AppBar(
-				title: Text(widget.title),
+				title: Text("MainScreen"),
 			),
 			
 			body: Center(
 				child: Column(
 					mainAxisAlignment: MainAxisAlignment.center,
 					children: <Widget>[
-						// todo
+						
+						Text($.principal)
+						
 					],
 				),
 			),
@@ -42,10 +50,20 @@ class _MainScreenModel extends ViewModel<MainScreen, _MainScreenLogic> {
 
 class _MainScreenLogic extends ViewLogic<MainScreen, _MainScreenModel> {
 	
+	ITokenStorageService _tokenStorage = TokenSharedStorageService.getInstance();
+	
+	String principal = "";
+	
 	
 	@override
-	void initialize() {
-	
+	void initialize() async {
+		
+		final sessionJwt = await _tokenStorage.currentSessionString();
+		final status = await $.sessionService.getUserInfo(sessionJwt);
+		
+		update(() {
+			principal = status.principal;
+		});
 	}
 	
 }

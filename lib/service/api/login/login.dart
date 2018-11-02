@@ -1,7 +1,4 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
-
-part 'login.g.dart';
 
 class AccessToken {
 	final DateTime expires;
@@ -12,20 +9,22 @@ class AccessToken {
 }
 
 
-@JsonSerializable()
-class UserForm {
+class LoginForm {
 
-	@JsonKey(name: 'facebook_id')
 	final String fbId;
-	
-	@JsonKey(name: 'facebook_token')
 	final String fbToken;
 	
-	const UserForm({
+	const LoginForm({
 		@required this.fbId,
 		@required this.fbToken
 	});
 	
-	factory UserForm.fromJson(Map<String, dynamic> json) => _$UserFormFromJson(json);
-	Map<String, dynamic> toJson() => _$UserFormToJson(this);
+	factory LoginForm.fromAccessToken(AccessToken token) {
+		return new LoginForm(fbId: token.userId, fbToken: token.token);
+	}
+	
+	Map<String, dynamic> toJson() => {
+		'facebook_uid': fbId,
+		'facebook_token': fbToken
+	};
 }

@@ -13,11 +13,13 @@ class Router {
 	static Map<String, WidgetBuilder> get routes => {
 		
 		SCREEN_LOGIN: (c) => LoginScreen(
-			loginService: Dependencies.loginService,
-			tokenStorageService: Dependencies.tokenStorageService,
+			appLoginService: Dependencies.appLoginService,
+			fbLoginService: Dependencies.fbLoginService,
 		),
 		
-		SCREEN_MAIN: (C) => MainScreen()
+		SCREEN_MAIN: (C) => MainScreen(
+			sessionService: Dependencies.sessionService,
+		)
 	};
 
 }
