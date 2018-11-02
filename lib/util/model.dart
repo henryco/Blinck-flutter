@@ -37,7 +37,7 @@ abstract class ViewLogic<WIDGET extends StatefulWidget, U extends ViewModel> {
 
   /// Overridable
   @protected
-  void initialize() {
+  void initialize() /*async*/ {
     /* void */
   }
 

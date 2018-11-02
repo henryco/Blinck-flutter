@@ -1,5 +1,5 @@
 import 'package:blinck_app/service/storage/token/i_token_storage_service.dart';
-import 'package:blinck_app/service/api/login/i_login_service.dart';
+import 'package:blinck_app/service/api/login/facebook/i_login_service.dart';
 import 'package:blinck_app/screen/router.dart';
 import 'package:blinck_app/util/model.dart';
 import 'package:flutter/material.dart';

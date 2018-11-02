@@ -1,4 +1,6 @@
 import 'package:meta/meta.dart';
+import '../login.dart';
+export '../login.dart';
 
 abstract class ILoginService {
 
@@ -8,10 +10,3 @@ abstract class ILoginService {
 	const ILoginService();
 }
 
-class AccessToken {
-	final DateTime expires;
-	final String userId;
-	final String token;
-	
-	AccessToken({this.token, this.userId, this.expires});
-}
