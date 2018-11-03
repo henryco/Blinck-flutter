@@ -7,6 +7,7 @@ import 'dart:async';
 class AppLoginService extends ILoginService {
 
 	static const String EP_LOGIN = ApiEndpoints.SERVER_URL + "/login/user";
+	static final String header = ApiHeaders.AUTHORIZATION_HTTP.toLowerCase();
 
 	const AppLoginService();
 	
@@ -14,9 +15,12 @@ class AppLoginService extends ILoginService {
 	Future<String> loginUser(LoginForm form) async {
 		
 		final response = await http.post(EP_LOGIN, body: json.encode(form.toJson()));
-		return response.statusCode == 200
-			? response.headers[ApiHeaders.AUTHORIZATION_HTTP]
-			: null;
+		if (response.statusCode != 200)
+			throw new Exception("RESPONSE CODE: ${response.statusCode}");
+		for (var key in response.headers.keys)
+			if (key.toLowerCase() == header)
+				return response.headers[header];
+		throw new Exception("Cannot find authorization header");
 	}
 
 }

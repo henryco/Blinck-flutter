@@ -78,7 +78,7 @@ class _State extends ViewModel<LoginScreen, _Logic> {
 
 class _Logic extends ViewLogic<LoginScreen, _State> {
 	
-	ITokenStorageService _tokenStorage = TokenSharedStorageService.getInstance();
+	final _tokenStorage = TokenSharedStorageService.getInstance();
 	bool authorized = false;
 	
 	@override
@@ -106,6 +106,7 @@ class _Logic extends ViewLogic<LoginScreen, _State> {
 			App.LoginForm(fbToken: token.token, fbId: token.uid)
 		);
 		
+		print('Auth: $authorization');
 		await _tokenStorage.saveSessionString(authorization);
 		Navigator.pushReplacementNamed($context, Router.SCREEN_MAIN);
 	}
